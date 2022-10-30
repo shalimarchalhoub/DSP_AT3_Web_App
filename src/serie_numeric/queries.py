@@ -8,23 +8,23 @@ def get_negative_number_query(schema_name, table_name, col_name):
     --------------------
     Parameters
     --------------------
-    => To be filled by student
+    pass
     -> name (type): description
 
     --------------------
     Pseudo-Code
     --------------------
-    => To be filled by student
+    pass
     -> pseudo-code
 
     --------------------
     Returns
     --------------------
-    => To be filled by student
+    pass
     -> (type): description
 
     """
-    => To be filled by student
+    return f'select count({col_name}) from {schema_name}.{table_name} where {col_name} < 0'
 
 def get_std_query(schema_name, table_name, col_name):
     """
@@ -36,23 +36,23 @@ def get_std_query(schema_name, table_name, col_name):
     --------------------
     Parameters
     --------------------
-    => To be filled by student
+    pass
     -> name (type): description
 
     --------------------
     Pseudo-Code
     --------------------
-    => To be filled by student
+    pass
     -> pseudo-code
 
     --------------------
     Returns
     --------------------
-    => To be filled by student
+    pass
     -> (type): description
 
     """
-    => To be filled by student
+    return f'select std({col_name}) from {schema_name}.{table_name}'
 
 def get_unique_query(schema_name, table_name, col_name):
     """
@@ -64,20 +64,20 @@ def get_unique_query(schema_name, table_name, col_name):
     --------------------
     Parameters
     --------------------
-    => To be filled by student
+    pass
     -> name (type): description
 
     --------------------
     Pseudo-Code
     --------------------
-    => To be filled by student
+    pass
     -> pseudo-code
 
     --------------------
     Returns
     --------------------
-    => To be filled by student
+    pass
     -> (type): description
 
     """
-    => To be filled by student
+    return f'select distinct {col_name} from {schema_name}.{table_name}'
