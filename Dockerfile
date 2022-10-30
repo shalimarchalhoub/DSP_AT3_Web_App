@@ -10,9 +10,3 @@ RUN pip install -r requirements.txt
 COPY . .
 
 ENV PYTHONPATH "${PYTHONPATH}:/app"
-
-# for debug only
-WORKDIR /app/src/serie_numeric
-CMD ["streamlit", "run", "display.py"]
-# deployment
-#CMD ["streamlit", "run", "app/streamlit_app.py"]
