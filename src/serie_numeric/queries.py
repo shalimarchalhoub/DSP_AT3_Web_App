@@ -8,20 +8,17 @@ def get_negative_number_query(schema_name, table_name, col_name):
     --------------------
     Parameters
     --------------------
-    pass
-    -> name (type): description
+    column from a Postgres table
 
     --------------------
     Pseudo-Code
     --------------------
-    pass
-    -> pseudo-code
+    count the number of negative number from the table 
 
     --------------------
     Returns
     --------------------
-    pass
-    -> (type): description
+    the number of negaive number(int)
 
     """
     return f'select count({col_name}) from {schema_name}.{table_name} where {col_name} < 0'
@@ -36,20 +33,17 @@ def get_std_query(schema_name, table_name, col_name):
     --------------------
     Parameters
     --------------------
-    pass
-    -> name (type): description
+    column from a Postgres table
 
     --------------------
     Pseudo-Code
     --------------------
-    pass
-    -> pseudo-code
+    calculate the standard deviation from the table 
 
     --------------------
     Returns
     --------------------
-    pass
-    -> (type): description
+    query that calulate the standard deviation(float)
 
     """
     return f'select std({col_name}) from {schema_name}.{table_name}'
@@ -64,20 +58,18 @@ def get_unique_query(schema_name, table_name, col_name):
     --------------------
     Parameters
     --------------------
-    pass
-    -> name (type): description
+    column from a Postgres table
 
     --------------------
     Pseudo-Code
     --------------------
-    pass
-    -> pseudo-code
+    select all the distinct from the table 
 
     --------------------
     Returns
     --------------------
-    pass
-    -> (type): description
+    query used for computing the number of unique values of a column from a Postgres table
+
 
     """
     return f'select distinct {col_name} from {schema_name}.{table_name}'

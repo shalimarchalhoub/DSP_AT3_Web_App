@@ -1,17 +1,6 @@
 import pandas as pd
 import altair as alt
 
-# for debug only
-# the session_states below should be provided after set_session_states() or set_app_config()
-import sys
-sys.path.insert(0, '../../')
-session_states = {'db':'', 'db_host':'', 'db_name':'', 'db_port':'',
-              'db_user':'', 'db_pass':'', 'db_status':'',
-              'db_infos_df':'', 'schema_selected':'', 
-              'table_selected':'', 'data':''}
-session_states['table_name'] = ''
-#
-
 from src.database.logics import PostgresConnector
 from src.serie_numeric.queries import get_negative_number_query, get_std_query, get_unique_query
 
@@ -102,8 +91,6 @@ class NumericColumn:
         Returns
         --------------------
         all the requested information
-        -> (type): description
-
         """
         self.set_zeros()
         self.set_missing()
@@ -125,20 +112,17 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        pass
         -> name (type): description
 
         --------------------
         Pseudo-Code
         --------------------
-        pass
-        -> pseudo-code
+        return None if self.serie is empty or none  
 
         --------------------
         Returns
         --------------------
-        pass
-        -> (type): description
+        boolean
 
         """
         return self.serie == None
@@ -153,7 +137,7 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        pass
+        
         -> name (type): description
 
         --------------------
@@ -169,12 +153,10 @@ class NumericColumn:
         -> (type): description
 
         """
-        #for debug only
-        mock_df = pd.DataFrame({'unique':[7,4,-1,50]})
-        self.n_unique = mock_df.count().item()
-        # self.n_unique = self.db.run_query(get_unique_query(self.schema_name,
-        #                                                                    self.table_name,
-        #                                                                    self.col_name)).count().item()
+        
+        self.n_unique = self.db.run_query(get_unique_query(self.schema_name,
+                                                                           self.table_name,
+                                                                           self.col_name)).count().item()
 
     def set_missing(self):
         """
@@ -186,24 +168,21 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        pass
-        -> name (type): description
+        column
 
         --------------------
         Pseudo-Code
         --------------------
-        pass
-        -> pseudo-code
+        sum all the null in column
 
         --------------------
         Returns
         --------------------
-        pass
-        -> (type): description
+        the number of null(int)
 
         """
-        self.n_missing = self.serie[self.serie[f'{self.col_name}'].isnull()].count().item()
-        
+        self.n_missing = self.serie.isnull().sum().item()
+
 
     def set_zeros(self):
         """
@@ -215,20 +194,17 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        pass
-        -> name (type): description
+        column 
 
         --------------------
         Pseudo-Code
         --------------------
-        pass
-        -> pseudo-code
+        count the number of 0 in each column
 
         --------------------
         Returns
         --------------------
-        pass
-        -> (type): description
+        number of times a serie has values equal to 0 (int)
 
         """
         self.n_zeros = self.serie[self.serie == 0].count().item()
@@ -255,16 +231,14 @@ class NumericColumn:
         --------------------
         Returns
         --------------------
-        pass
-        -> (type): description
+    
+        -> number of times a serie has negative values(int)
 
         """
-        # for debug only
-        mock_df = pd.DataFrame({'negative':[-4,-1]})
-        self.n_negatives = mock_df.count().item()
-        # self.n_negatives = self.db.run_query(get_negative_number_query(self.schema_name,
-        #                                                             self.table_name,
-        #                                                             self.col_name)).count().item()
+      
+        self.n_negatives = self.db.run_query(get_negative_number_query(self.schema_name,
+                                                                       self.table_name,
+                                                                       self.col_name)).count().item()
 
     def set_mean(self):
         """
@@ -276,20 +250,18 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        pass
-        -> name (type): description
+        column
 
         --------------------
         Pseudo-Code
         --------------------
-        pass
-        -> pseudo-code
+        computes the average value of a serie
 
         --------------------
         Returns
         --------------------
         pass
-        -> (type): description
+        -> mean(int): average value of a serie
 
         """
         self.col_mean = self.serie.mean().item()
@@ -304,27 +276,25 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        pass
-        -> name (type): description
+        serie
 
         --------------------
         Pseudo-Code
         --------------------
-        pass
+        
         -> pseudo-code
 
         --------------------
         Returns
         --------------------
         pass
-        -> (type): description
+        -> standard deviation(int): standard deviation value of a serie using a SQL query
 
         """
-        mock_df = pd.DataFrame({'inte':[-1,-4,7,50,7,7,7,7,7,7]}).std()
-        res_df = mock_df
-        # res_df = self.db.run_query(get_std_query(self.schema_name,
-        #                                                           self.table_name,
-        #                                                           self.col_name))
+       
+        res_df = self.db.run_query(get_std_query(self.schema_name,
+                                                                 self.table_name,
+                                                                 self.col_name))
         self.col_std = res_df.iloc[0].item()
     
     def set_min(self):
@@ -337,20 +307,18 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        pass
-        -> name (type): description
+        serie
 
         --------------------
         Pseudo-Code
         --------------------
-        pass
-        -> pseudo-code
+        computes the minimum value of a serie
 
         --------------------
         Returns
         --------------------
         pass
-        -> (type): description
+        minimum value of a serie (int)
 
         """
         self.col_min = self.serie.min().item()
@@ -365,20 +333,17 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        pass
-        -> name (type): description
+        serie
 
         --------------------
         Pseudo-Code
         --------------------
-        pass
-        -> pseudo-code
+        computes the maximum value of a serie
 
         --------------------
         Returns
         --------------------
-        pass
-        -> (type): description
+        maximum value of a serie (int)
 
         """
         self.col_max = self.serie.max().item()
@@ -393,20 +358,18 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        pass
-        -> name (type): description
+        serie
 
         --------------------
         Pseudo-Code
         --------------------
-        pass
-        -> pseudo-code
+        computes the median value of a serie
 
         --------------------
         Returns
         --------------------
         pass
-        -> (type): description
+        median value of a serie(int)
 
         """
         self.col_median = int(self.serie.median().item())
@@ -454,20 +417,20 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        pass
-        -> name (type): description
+        serie
 
         --------------------
         Pseudo-Code
         --------------------
-        pass
-        -> pseudo-code
+        calculate the percentage with value 
+        calculate the occurrence with value 
+        combine the percentage and occurrence by value
 
         --------------------
         Returns
         --------------------
-        pass
-        -> (type): description
+        the most frequest value of a serie
+
 
         """
         t = pd.DataFrame(self.serie[f'{self.col_name}'].value_counts(normalize =True))
@@ -498,20 +461,25 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        pass
-        -> name (type): description
+        self.n_unique
+        self.n_missing,
+        self.n_zeros,
+        self.n_negatives,
+        self.col_mean,
+        self.col_std,
+        self.col_min,
+        self.col_max,
+        self.col_median
 
         --------------------
         Pseudo-Code
         --------------------
-        pass
-        -> pseudo-code
+        formats all requested information
 
         --------------------
         Returns
         --------------------
-        pass
-        -> (type): description
+        summary table
 
         """
         self.df = pd.DataFrame({'Description':['Number of Unique Values',
@@ -536,49 +504,3 @@ class NumericColumn:
                                       ]})
         return self.df
 
-
-if __name__ == "__main__":
-    # for debug only
-    # To check this page, 
-    # cd to dsp_at3_student_id\src\serie_numeric
-    # python logics.py
-    
-    # direct copy from test_serie_numeric_queries for detail debug
-    nc = NumericColumn( 'student', 'inte')
-    nc.serie = pd.DataFrame({'inte': [-1,-4,7,50,7,7,7,7,7,7]})
-    nc.set_data()
-    # df = nc.get_summary_df()
-    # mask = df['Description'] == 'Number of Rows with Missing Values'
-    # print(df[mask]['Values'])
-    
-    # nc.set_histogram()
-    # print(nc.histogram)
-    print(nc.serie.max().item())
-    
-    # t = pd.DataFrame(nc.serie['inte'].value_counts(normalize =True))
-    # t = t.reset_index()
-    # t.columns = ['value', 'percentage']
-    
-    # d =  pd.DataFrame(nc.serie['inte'].value_counts())
-    # d = d.reset_index()
-    # d.columns = ['value', 'occurrence']
-    # d = d.sort_values(by='value')
-    # d = d.reset_index(drop=True)
-    
-    # d = d.join(t.set_index('value'), on='value')
-    # d = d.sort_values(by='occurrence', ascending=False)
-    # d = d.reset_index(drop=True)
-    
-    # print(d)
-    # print(pd.DataFrame({'value':[-4,-1,7,50],
-    #                             'occurrence':[1,1,7,1],
-    #                             'percentage':[0.7,0.1,0.1,0.1]
-    #                                                        }))
-    # print(
-    #     d.equals(pd.DataFrame({'value':[7,-4,-1,50],
-    #                             'occurrence':[7,1,1,1],
-    #                             'percentage':[0.7,0.1,0.1,0.1]
-    #                                                        }))
-    # )
-    pass
-    
