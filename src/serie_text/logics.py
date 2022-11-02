@@ -1,9 +1,18 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
-
+import numpy as np
+import sys
 from src.database.logics import PostgresConnector
 from src.serie_text.queries import get_missing_query, get_mode_query, get_alpha_query
+
+sys.path.insert(0, '../../')
+session_states = {'db':'', 'db_host':'', 'db_name':'', 'db_port':'',
+              'db_user':'', 'db_pass':'', 'db_status':'',
+              'db_infos_df':'', 'schema_selected':'', 
+              'table_selected':'', 'data':''}
+
+session_states['table_name'] = ''
 
 class TextColumn:
     """
@@ -34,7 +43,27 @@ class TextColumn:
 
     """
     def __init__(self, schema_name=None, table_name=None, col_name=None, db=None, serie=None):
-        => To be filled by student
+        self.schema_name: str = schema_name
+        self.table_name: str = table_name 
+        self.col_name: str = col_name
+        self.df = pd.DataFrame()
+        self.db = PostgresConnector(session_states['db_host'],
+                                    session_states['db_user'],
+                                    session_states['db_pass'],
+                                    session_states['db_host'],
+                                    session_states['db_port'])
+        self.serie: pd.Series = serie
+        self.n_unique: int = None
+        self.n_missing: int = None
+        self.n_empty: int = None
+        self.n_mode: int = None
+        self.n_space: int = None
+        self.n_lower: int = None
+        self.n_upper: int = None
+        self.n_alpha: int = None
+        self.n_digit: int = None
+        self.barchart: int = None
+        self.frequent: int = None
     
     def set_data(self):
         """
@@ -46,24 +75,44 @@ class TextColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        None
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        Return information for 
+        is_serie_none()
+        set_unique()
+        set_missing()
+        set_empty()
+        set_mode()
+        set_whitespace()
+        set_lowercase()
+        set_uppercase()
+        set_alphabet()
+        set_digit()
+        set_barchart()
+        set_frequent()
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        return information for all the logic queries
 
         """
-        => To be filled by student
-      
+        self.is_serie_none()
+        self.set_unique()
+        self.set_missing()
+        self.set_empty()
+        self.set_mode()
+        self.set_whitespace()
+        self.set_lowercase()
+        self.set_uppercase()
+        self.set_alphabet()
+        self.set_digit()
+        self.set_barchart()
+        self.set_frequent()
+
     def is_serie_none(self):
         """
         --------------------
@@ -74,23 +123,22 @@ class TextColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        None
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        check if series is empty and return answer
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        (Boolean)-> : 
+        True if empty
+        False if not empty
 
         """
-        => To be filled by student
+        return bool(self.serie)
 
     def set_unique(self):
         """
@@ -102,23 +150,23 @@ class TextColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        None
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        Get the unique values of a serie in a list
+        Count number of items in the list
+        Return appropriate value 
+
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        -> (int): number of unique values in a serie
 
         """
-        => To be filled by student
+        return len(self.serie.unique().tolist())
 
     def set_missing(self):
         """
@@ -130,23 +178,22 @@ class TextColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        None
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        Get the sum of the missing values in the series using the sql query get_missin_query()
+        Return appropriate value
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        (int): Number of missing values
 
         """
-        => To be filled by student
+        return get_missing_query(self.schema_name, self.table_name, self.col_name)
+
 
     def set_empty(self):
         """
@@ -158,23 +205,23 @@ class TextColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        None
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        Get the empty values of the series
+        Return the sum of empty values
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        (int): Number of empty values
+
 
         """
-        => To be filled by student
+        empty = self.serie.values == ''
+        return empty.sum()
 
     def set_mode(self):
         """
@@ -186,23 +233,20 @@ class TextColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        None
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        Use the get_mode_query using the schema_name, table_name and col_name attributes
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        (string): mode value of a serie
 
         """
-        => To be filled by student
+        return (get_mode_query(self.schema_name, self.table_name, self.col_name))
 
     def set_whitespace(self):
         """
@@ -214,23 +258,20 @@ class TextColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        None
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        Check the serie for entries that are white spaces and return the sum of them
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        (int): Number of white space values
 
         """
-        => To be filled by student
+        return sum(self.serie.str.isspace())
 
     def set_lowercase(self):
         """
@@ -242,23 +283,33 @@ class TextColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        None
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        Create an empty list
+        do a loop in the serie and check if i is a number
+        if it's a number return nothing but if it's an alphabet letter append it to the list
+        create a new list that has all the alphabet entries to it
+        sum the total number of times where the alphabet letters were in lower case letters
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        -> (int): number of entries with lowercase letters
 
         """
-        => To be filled by student
+        alphabet = []
+        for i in self.serie:
+            if i is np.NaN:
+                None
+            else:
+                if i.isalpha() == True:
+                 alphabet.append(i)
+        total= pd.Series(alphabet)
+    
+        return sum(total.str.islower().fillna(False))
 
     def set_uppercase(self):
         """
@@ -267,26 +318,37 @@ class TextColumn:
         --------------------
         -> set_uppercase (method): Class method that computes the number of times a serie has only uppercase characters
 
-        --------------------
+         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        None
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        Create an empty list
+        do a loop in the serie and check if i is a number
+        if it's a number return nothing but if it's an alphabet letter append it to the list
+        create a new list that has all the alphabet entries to it
+        sum the total number of times where the alphabet letters were in upper case letters
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
-
+        -> (int): number of entries with upper letters
         """
-        => To be filled by student
+
+        alphabet = []
+        for i in self.serie:
+            if i is np.NaN:
+                None
+            else:
+                if i.isalpha() == True:
+                 alphabet.append(i)
+        total= pd.Series(alphabet)
+    
+        return sum(total.str.isupper().fillna(False))
+
     
     def set_alphabet(self):
         """
@@ -298,23 +360,20 @@ class TextColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        None
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        using the get_alpha_query with the arguments schema_name, table_name and col_name
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        int: total of times an entry is only alphabetical
 
         """
-        => To be filled by student
+        return get_alpha_query(self.schema_name, self.table_name, self.col_name)
 
     def set_digit(self):
         """
@@ -326,23 +385,21 @@ class TextColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        None
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        Check the serie for entries that contain only digit characters and and return the sum of them
+
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        (int): Number of entries with only digit characters
 
         """
-        => To be filled by student
+        return sum(self.serie.str.isdigit())
 
     def set_barchart(self):  
         """
@@ -354,23 +411,24 @@ class TextColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        None
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        Define data as column name of the series
+        Create a Tabluar data chart from the defined data and create the Bar Chart with x as column name and y as the count
+        return the Bar Chart
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        (chart): Bar Chart represeting the count of each value in a serie 
 
         """
-        => To be filled by student
+        data = {self.col_name:self.serie} 
+        BarChart = alt.Chart(pd.DataFrame(data)).mark_bar().encode(x=self.col_name, y='count()')
+        return BarChart
       
     def set_frequent(self, end=20):
         """
@@ -398,7 +456,11 @@ class TextColumn:
         -> (type): description
 
         """
-        => To be filled by student
+        frequency = self.serie.value_counts().reset_index()
+        frequency.columns = ['Values', 'Occurance']
+        frequency['Percentage'] = (frequency['Occurance'] / frequency['Occurance'].sum()) * 100
+
+        return frequency.head(20)
 
     def get_summary_df(self):
         """
