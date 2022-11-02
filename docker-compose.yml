@@ -1,1 +1,9 @@
-=> to be filled by student
+version: "3"
+services:
+  streamlit:
+    container_name: "StreamlitApp"
+    build:
+      dockerfile: ./Dockerfile
+      context: ./
+    ports:
+      - "8501:8501"
