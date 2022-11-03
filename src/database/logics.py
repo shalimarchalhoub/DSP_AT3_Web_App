@@ -1,8 +1,10 @@
 import psycopg2
 from psycopg2 import OperationalError
 import pandas as pd
+import sys
+sys.path.insert(0,'/home/mahjabeen/src/database')
+from queries import get_tables_list_query, get_table_data_query, get_table_schema_query
 
-from src.database.queries import get_tables_list_query, get_table_data_query, get_table_schema_query
 
 class PostgresConnector:
     """
@@ -23,37 +25,54 @@ class PostgresConnector:
     -> cursor (psycopg2._psycopg.connection.cursor): Postgres cursor for executing query (optional)
     -> excluded_schemas (list): List containing the names of internal Postgres schemas to be excluded from selection (information_schema, pg_catalog)
     """
-    def __init__(self, database="postgres", user='postgres', password='password', host='127.0.0.1', port='5432'):
-        => To be filled by student
-    
+
+    def __init__(self, database,user,password,host='127.0.0.1',port='5432'):
+
+        self.database=database
+        self.user=user
+        self.password=password
+        self.host=host
+        self.port=port
+        self.conn=None
+        self.cur=None
+
     def open_connection(self):
         """
-        --------------------
-        Description
-        --------------------
-        -> open_connection (method): Class method that creates an active connection to a Postgres database
+            --------------------
+            Description
+            --------------------
+            -> open_connection (method): Class method that creates an active connection to a Postgres database
 
-        --------------------
-        Parameters
-        --------------------
-        => To be filled by student
-        -> name (type): description
+            --------------------
+           Parameters:
+           ->self: PostgresConnector object, with reference to it, the user can access any parameter
+           of the PostgresConnector class
+           ->database: str, it holds the database name
+           ->user:str, it holds the username of the postgres user
+           ->password:str, it holds the password of the user to connect to the postgres databse
+           ->host:str, it holds the hostname/address of the postgress server
+           ->conn:str, it holds the connection information to the postgres server
+           ->cur:str, it holds the information of cursor open so that the user can initiate
+            a transaction to the database
+            --------------------
+            Pseudo-Code
+            --------------------
+            -> pseudo-code: This code helps the user to connect to the databse
 
-        --------------------
-        Pseudo-Code
-        --------------------
-        => To be filled by student
-        -> pseudo-code
-
-        --------------------
-        Returns
-        --------------------
-        => To be filled by student
-        -> (type): description
-
+            --------------------
+            ->Returns: type is str, It returns the connection information and up on successful it tells the user that
+            it is connected to the databse or tells the user that the connection was unsuccessful
+            --------------------
         """
-        => To be filled by student
+        try:
 
+             self.conn=psycopg2.connect("dbname={0} user={1}  password={2}".format(self.database, self.user, self.password))
+
+
+
+
+        except (Exception, psycopg2.DatabaseError) as error:
+             print(error)
     def close_connection(self):
         """
         --------------------
@@ -64,135 +83,148 @@ class PostgresConnector:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
-
+       ->self: PostgresConnector object, with reference to it, the user can access any parameter
+       of the PostgresConnector class
         --------------------
-        Pseudo-Code
+        ->Pseudo-Code: This code helps the user to close an active connection to a Postgres databse
         --------------------
-        => To be filled by student
-        -> pseudo-code
-
+       ->Returns:type is str, It will tell the user that the connection is whether closed or not to the Postgres database
         --------------------
-        Returns
-        --------------------
-        => To be filled by student
-        -> (type): description
-
         """
-        => To be filled by student
+
+        if self.conn is not None:
+           self.conn.close()
+           print('Database Connection is closed now')
+        else:
+            print("connection is still active")
 
     def open_cursor(self):
         """
         --------------------
         Description
         --------------------
-        -> open_cursor (method): Class method that creates an active cursor to a Postgres database 
+        -> open_cursor (method): Class method that creates an active cursor to a Postgres database
 
         --------------------
-        Parameters
+        Parameters:
+
         --------------------
-        => To be filled by student
-        -> name (type): description
+        -->self: PostgresConnector object, with reference to it, the user can access any parameter
+        of the PostgresConnector class
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        -> This code opens the cursor for the user to initiate a transaction from or to the Postgres databse
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        ->type is str, It returns the ability to the  user to pull or load information from or into the Postgres database
 
         """
-        => To be filled by student
-        
+        self.open_connection()
+        self.cur = self.conn.cursor()
+        if self.cur is not None:
+            print("Cursor is opened")
+
+
+        else:
+            print("Cursor is already closed")
+
     def close_cursor(self):
-        """
-        --------------------
-        Description
-        --------------------
-        -> close_cursor (method): Class method that closes an active cursor to a Postgres database 
+            """
+            --------------------
+            Description
+            --------------------
+            -> close_cursor (method): Class method that closes an active cursor to a Postgres database
 
-        --------------------
-        Parameters
-        --------------------
-        => To be filled by student
-        -> name (type): description
+            --------------------
+            Parameters
+            --------------------
+            -->self: PostgresConnector object, with reference to it, the user can access any parameter
+            of the PostgresConnector class
 
-        --------------------
-        Pseudo-Code
-        --------------------
-        => To be filled by student
-        -> pseudo-code
+            --------------------
+            Pseudo-Code
+            --------------------
+            ->This code closes the cursor to the Postgres database
 
-        --------------------
-        Returns
-        --------------------
-        => To be filled by student
-        -> (type): description
+            --------------------
+            Returns
+            --------------------
+            -> type is str, It returns the curser closed message and if the user try to pull or load the information to the
+            database, it throws an error
+            """
+            self.open_cursor()
+            self.cur=self.cur.close()
+            print(self.cur)
 
-        """
-        => To be filled by student
+            if self.cur is None:
+                print("cursor is closed now")
+            else:
+                print("Cursor is still opened")
 
     def run_query(self, sql_query):
         """
         --------------------
         Description
         --------------------
-        -> run_query (method): Class method that executes a SQL query and returns the result as a Pandas dataframe
+        -> run_query (method): Class method that executes a SQL query and returns the result as a
+        Pandas dataframe
 
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        ->self:PostgresConnector object, with reference to it, the user can access any parameter
+            of the PostgresConnector class
+        ->sql_query: str, it takes the sql_query as an input from the user
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+       ->This code takes the input as query from the user and depending upon the requirements,
+         it fetch or load the information into or from the Postgres database
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
-
+        ->return type is string/two-dimensional tabular structure with labelled axes(rows and columns), it returns the result of the query
         """
-        => To be filled by student
-        
+        self.open_connection()
+        df=pd.read_sql(sql_query,self.conn)
+        print(df)
+        return df
+
+
     def list_tables(self):
         """
         --------------------
         Description
         --------------------
-        -> list_tables (method): Class method that extracts the list of available tables using a SQL query (get_tables_list_query())
+        -> list_tables (method): Class method that extracts the list of available tables using a SQL
+        query (get_tables_list_query())
 
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
-
+        ->self:PostgresConnector object, with reference to it, the user can access any parameter
+        of the PostgresConnector class
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        ->This code helps the user to call the method, get_tables_list_query() to extracts the list of
+        available tables
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        ->return type is string/two-dimensional tabular structure with labelled axes(rows and columns), it returns the list of available tables(dataframe)
 
         """
-        => To be filled by student
+        df=get_tables_list_query()
+        print(df)
+        return df
 
     def load_table(self, schema_name, table_name):
         """
@@ -204,48 +236,78 @@ class PostgresConnector:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
-
+        ->self:PostgresConnector object, with reference to it, the user can access any parameter
+       of the PostgresConnector class
+        ->schema_name, type is string, it takes the name of the schema from the user as one of the inputs
+        -> table_name, type is string, it takes the name of the table as one of the inputs
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
-
+        This code helps the user to load the content of a table by calling get_table_data_query() method.
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
-
+        ->return  type is string/two-dimensional tabular structure with labelled axes(rows and columns), It returns the content(dataframe) of a table
         """
-        => To be filled by student
+
+        df=get_table_data_query(schema_name,table_name)
+
 
     def get_table_schema(self, schema_name, table_name):
-        """
-        --------------------
-        Description
-        --------------------
-        -> get_table_schema (method): Class method that extracts the schema information of a table using a SQL query (get_table_schema_query())
-
-        --------------------
-        Parameters
-        --------------------
-        => To be filled by student
-        -> name (type): description
-
-        --------------------
-        Pseudo-Code
-        --------------------
-        => To be filled by student
-        -> pseudo-code
-
-        --------------------
-        Returns
-        --------------------
-        => To be filled by student
-        -> (type): description
 
         """
-        => To be filled by student
+         --------------------
+         Description
+         --------------------
+         -> get_table_schema (method): Class method that extracts the schema information of a table
+         using a SQL query (get_table_schema_query())
+
+         --------------------
+         Parameters
+         --------------------
+         ->self:PostgresConnector object, with reference to it, the user can access any parameter
+         of the PostgresConnector class
+         ->schema_name, type is string, it takes the name of the schema from the user as one of the inputs
+         -> table_name, type is string, it takes the name of the table as
+
+         --------------------
+         Pseudo-Code
+         --------------------
+         -> This code helps the user to extracts the schema information of a table by calling
+         get_table_schema_query(schema_name,table_name)
+
+         --------------------
+         Returns
+         --------------------
+         -> ->return  type is string/two-dimensional tabular structure with labelled axes(rows and columns),
+         It returns the schema information(dataframe) of a table.
+        """
+        df=get_table_schema_query(schema_name, table_name)
+        print(df)
+        return df
+
+
+
+
+pconnector=PostgresConnector('mahjabeen','mahjabeen','12345','localhost','5432')
+pconnector.run_query("select * from suppliers")
+pconnector.list_tables()
+pconnector.load_table('public','employees')
+pconnector.get_table_schema('public','products')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
