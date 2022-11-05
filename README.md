@@ -52,30 +52,30 @@ And you will be able to see the app there and start using the various functions
 ./
 |
 ├── app/
-│   └── streamlit_app.py                <- Python Code used to display the final application in the Docker Container
+│   └── streamlit_app.py            <- Python Code used to display the final application in the Docker Container
 ├── src/
-│   ├── __init__.py                     <- turns src folder into a package for importing in main script
-│   ├── config.py                       <- python script containing the code to configure the app
+│   ├── __init__.py                 <- turns src folder into a package for importing in main script
+│   ├── config.py                   <- python script containing the code to configure the app
 │   ├── Database/                 
-│      ├── dsipaly.py                   <- python script for displaying the menu to connect to a database
-│      ├── logics.py                    <- python script that manages the connection to a Postgres Databse
-│      └── queries.py                   <- python script for SQL queries related to the Database             
+│      ├── dsipaly.py               <- python script for displaying the menu to connect to a database
+│      ├── logics.py                <- python script that manages the connection to a Postgres Databse
+│      └── queries.py               <- python script for SQL queries related to the Database             
 │   ├── Dataframe/               
-│      ├── dsipaly.py                   <- python script for displaying the overall information for a selected table
-│      ├── logics.py                    <- python script that manages the dataset loaded from Postgres
-│      └── queries.py                   <- python script for SQL queries related to the dataframe
+│      ├── dsipaly.py               <- python script for displaying the overall information for a selected table
+│      ├── logics.py                <- python script that manages the dataset loaded from Postgres
+│      └── queries.py               <- python script for SQL queries related to the dataframe
 │   ├── serie_date/
-│      ├── dsipaly.py                   <- python script for displaying information on all date/time columns
-│      ├── logics.py                    <- python script that manages date/time columns loaded from Postgres
-│      └── queries.py                   <- python script for SQL queries related to date columns
+│      ├── dsipaly.py               <- python script for displaying information on all date/time columns
+│      ├── logics.py                <- python script that manages date/time columns loaded from Postgres
+│      └── queries.py               <- python script for SQL queries related to date columns
 │   ├── serie_numeric/               
-│      ├── dsipaly.py                   <- python script for displaying information on all of the numeric columns
-│      ├── logics.py                    < - ppython script that manages numeric columns loaded from Postgres
-│      └── queries.py                   <- python script for SQL queries related to numeric columns
+│      ├── dsipaly.py               <- python script for displaying information on all of the numeric columns
+│      ├── logics.py                < -python script that manages numeric columns loaded from Postgres
+│      └── queries.py               <- python script for SQL queries related to numeric columns
 │   ├── serie_text/                
-│      ├── dsipaly.py                   <- python script for displaying information on all of the text columns
-│      ├── logics.py                    <- python script that manages text columns loaded from Postgres
-│      └── queries.py                   <- python script for SQL queries related to to text columns
+│      ├── dsipaly.py               <- python script for displaying information on all of the text columns
+│      ├── logics.py                <- python script that manages text columns loaded from Postgres
+│      └── queries.py               <- python script for SQL queries related to to text columns
 |   ├──test
 │      ├── test_database_logics.py      <- python script for testing code from Database/logics.py
 │      ├── test_database_queries.py     <- python script for testing code from Database/queries.py
