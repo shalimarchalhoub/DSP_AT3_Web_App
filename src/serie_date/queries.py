@@ -8,23 +8,23 @@ def get_min_date_query(schema_name, table_name, col_name):
     --------------------
     Parameters
     --------------------
-    => To be filled by student
-    -> name (type): description
+    => schema_name = the schema name of the column we would like to take information from
+    => table_name = the table name whose column we want to know more of
+    => col_name (date) = the column name from database we want to know more of (which contains dates)
 
     --------------------
     Pseudo-Code
     --------------------
-    => To be filled by student
-    -> pseudo-code
+    => A function that is used to calculate the smallest date in the datetime column and returns that date
 
     --------------------
     Returns
     --------------------
-    => To be filled by student
-    -> (type): description
+    => query that contains the smallest date in the datetime column
 
     """
-    => To be filled by student
+    query = "SELECT MIN(" + col_name + ") FROM " + schema_name + "." + table_name
+    return query
 
 def get_weekend_count_query(schema_name, table_name, col_name):
     """
@@ -36,48 +36,49 @@ def get_weekend_count_query(schema_name, table_name, col_name):
     --------------------
     Parameters
     --------------------
-    => To be filled by student
-    -> name (type): description
+    => schema_name = the schema name of the column we would like to take information from
+    => table_name = the table name whose column we want to know more of
+    => col_name (date) = the column name from database we want to know more of (which contains dates)
 
     --------------------
     Pseudo-Code
     --------------------
-    => To be filled by student
-    -> pseudo-code
+    => A function that is used to calculate how many number of days in the dates are weekend
 
     --------------------
     Returns
     --------------------
-    => To be filled by student
-    -> (type): description
+    => query that contains the count of days in the dates falling on weekends
 
     """
-    => To be filled by student
+    query = "SELECT count(*) FROM " + schema_name + "." + table_name + \
+        " WHERE EXTRACT(dow FROM date '" + col_name + "') = 6 and EXTRACT(dow FROM date '" + col_name + "') = 0"
+    return query
 
 def get_1900_count_query(schema_name, table_name, col_name):
     """
     --------------------
     Description
     --------------------
-    -> get_1900_count_query (method): Function that returns the query used for computing the number of times a datetime column has the value '1900-01-01'
+    => get_1900_count_query (method): Function that returns the query used for computing the number of times a datetime column has the value '1900-01-01'
 
     --------------------
     Parameters
     --------------------
-    => To be filled by student
-    -> name (type): description
+    => schema_name = the schema name of the column we would like to take information from
+    => table_name = the table name whose column we want to know more of
+    => col_name (date) = the column name from database we want to know more of (which contains dates)
 
     --------------------
     Pseudo-Code
     --------------------
-    => To be filled by student
-    -> pseudo-code
+    => The function that will return the query which will output the count of date equal to 01-01-1900 from a datetime column from a Postgres table
 
     --------------------
     Returns
     --------------------
-    => To be filled by student
-    -> (type): description
+    => the count of value in a datetime column which has the value equal to 01-01-1990
 
     """
-    => To be filled by student
+    query = "SELECT " + col_name + "FROM " + schema_name + "." + table_name + "WHERE " + col_name + "= '1900-01-01'"
+    return query

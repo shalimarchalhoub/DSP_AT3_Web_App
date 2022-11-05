@@ -7,7 +7,10 @@ def read_data():
     --------------------
     Description
     --------------------
-    -> read_data (function): Function that loads the content of the Postgres table selected, extract its schema information and instantiate a Dataset class accordingly
+    -> read_data (function): Function that 
+    loads the content of the Postgres table selected, 
+    extract its schema information and instantiate a 
+    Dataset class accordingly
 
     --------------------
     Parameters
@@ -28,14 +31,21 @@ def read_data():
     -> (type): description
 
     """
-    => To be filled by student
+    #=> To be filled by student
+    schema_name = st.session_state['schema_selected']
+    table_name = st.session_state['table_selected']
+    db = st.session_state['db']
+    dt = Dataset(schema_name, table_name, db)
+    st.session_state['data'] = dt
+    dt.set_data()
 
 def display_overall():
     """
     --------------------
     Description
     --------------------
-    -> display_overall (function): Function that displays all the information on the Overall section of the streamlit app
+    -> display_overall (function): Function that displays 
+    all the information on the Overall section of the streamlit app
 
     --------------------
     Parameters
@@ -56,14 +66,17 @@ def display_overall():
     -> (type): description
 
     """
-    => To be filled by student
+    #=> To be filled by student
+    dt = st.session_state['data']
+    st.dataframe(dt.get_summary_df())
 
 def display_dataframes():
     """
     --------------------
     Description
     --------------------
-    -> display_dataframes (function): Function that displays all the information on the Explore section of the streamlit app
+    -> display_dataframes (function): Function that displays 
+    all the information on the Explore section of the streamlit app
 
     --------------------
     Parameters
@@ -84,4 +97,6 @@ def display_dataframes():
     -> (type): description
 
     """
-    => To be filled by student
+    #=> To be filled by student
+    dt = st.session_state['data']
+    st.dataframe(dt.df)
