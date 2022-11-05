@@ -8,23 +8,22 @@ def get_missing_query(schema_name, table_name, col_name):
     --------------------
     Parameters
     --------------------
-    => To be filled by student
-    -> name (type): description
+    schema_name (str): Name of the dataset schema 
+    table_name (str): Name of the dataset table 
+    col_name (str): Name of the column 
 
     --------------------
     Pseudo-Code
     --------------------
-    => To be filled by student
-    -> pseudo-code
+    Gets the total number of columns where the values are null from the specific table in the schema
 
     --------------------
     Returns
     --------------------
-    => To be filled by student
-    -> (type): description
+    (SQL Query): SQL Query for total number of columns with missing data
 
     """
-    => To be filled by student
+    return ("SELECT COUNT("+col_name+") FROM " + schema_name + "." + table_name + "WHERE" + col_name + "IS NULL;")
 
 def get_mode_query(schema_name, table_name, col_name):
     """
@@ -36,23 +35,23 @@ def get_mode_query(schema_name, table_name, col_name):
     --------------------
     Parameters
     --------------------
-    => To be filled by student
-    -> name (type): description
+    schema_name (str): Name of the dataset schema 
+    table_name (str): Name of the dataset table 
+    col_name (str): Name of the column 
 
     --------------------
     Pseudo-Code
     --------------------
-    => To be filled by student
-    -> pseudo-code
+    Group data by columns and order them then get the mode of each from the table within the schema
 
     --------------------
     Returns
     --------------------
-    => To be filled by student
-    -> (type): description
+    (SQL Query): SQL Query that computes the mode of a column
+
 
     """
-    => To be filled by student
+    return ("SELECT MODE() WITHIN GROUP (ORDER BY " +col_name + ") AS mode FROM " + schema_name + "." + table_name + ";")
 
 def get_alpha_query(schema_name, table_name, col_name):
     """
@@ -64,20 +63,20 @@ def get_alpha_query(schema_name, table_name, col_name):
     --------------------
     Parameters
     --------------------
-    => To be filled by student
-    -> name (type): description
+    schema_name (str): Name of the dataset schema 
+    table_name (str): Name of the dataset table 
+    col_name (str): Name of the column
 
     --------------------
     Pseudo-Code
     --------------------
-    => To be filled by student
-    -> pseudo-code
+    Get the total amount of columns from the table within the schema where the column entried only have alphabetical letters
 
     --------------------
     Returns
     --------------------
-    => To be filled by student
-    -> (type): description
+    (SQL Query): SQL Query for computing total amount of time a column has only alphabetical entries
+
 
     """
-    => To be filled by student
+    return("SELECT COUNT(" + col_name + ") FROM " + schema_name+ "."+table_name + " WHERE" + col_name + " LIKE '%[a-zA-Z]%'")
