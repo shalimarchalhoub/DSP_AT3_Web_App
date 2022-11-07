@@ -68,6 +68,8 @@ class PostgresConnector:
 
              self.conn=psycopg2.connect("dbname={0} user={1}  password={2}".format(self.database, self.user, self.password))
 
+             return(self.conn)
+
 
 
 
@@ -222,7 +224,8 @@ class PostgresConnector:
         ->return type is string/two-dimensional tabular structure with labelled axes(rows and columns), it returns the list of available tables(dataframe)
 
         """
-        df=get_tables_list_query()
+        query=get_tables_list_query()
+        df=pd.read_sql_query(query,self.conn)
         print(df)
         return df
 
@@ -250,7 +253,10 @@ class PostgresConnector:
         ->return  type is string/two-dimensional tabular structure with labelled axes(rows and columns), It returns the content(dataframe) of a table
         """
 
-        df=get_table_data_query(schema_name,table_name)
+        query=get_table_data_query(schema_name,table_name)
+        df=pd.read_sql_query(query,self.conn)
+        print(df)
+        return(df)
 
 
     def get_table_schema(self, schema_name, table_name):
@@ -271,7 +277,7 @@ class PostgresConnector:
          -> table_name, type is string, it takes the name of the table as
 
          --------------------
-         Pseudo-code
+         Pseudo-Code
          --------------------
          -> This code helps the user to extracts the schema information of a table by calling
          get_table_schema_query(schema_name,table_name)
@@ -282,14 +288,14 @@ class PostgresConnector:
          -> ->return  type is string/two-dimensional tabular structure with labelled axes(rows and columns),
          It returns the schema information(dataframe) of a table.
         """
-        df=get_table_schema_query(schema_name, table_name)
+        query=get_table_schema_query(schema_name, table_name)
+        df=pd.read_sql_query(query,self.conn)
         print(df)
         return df
 
-
-
-
+"""
 pconnector=PostgresConnector('mahjabeen','mahjabeen','12345','localhost','5432')
+
 pconnector.run_query("select * from suppliers")
 pconnector.list_tables()
 pconnector.load_table('public','employees')
@@ -297,8 +303,32 @@ pconnector.get_table_schema('public','products')
 
 
 
+pconnector=PostgresConnector('{}'.format(database),'{}'.format(user),'{}'.format(database))
+pconnector.run_query("select * from suppliers")
+pconnector.list_tables()
+pconnector.load_table('public','employees')
+pconnector.get_table_schema('public','products')
+print("list table starts")
 
 
+database,user,password=input("enter dbname,username,password seperated a space,").split()
+pconnector=PostgresConnector('{}'.format(database),'{}'.format(user),'{}'.format(database))
+
+pconnector.run_query("select * from suppliers")
+pconnector.list_tables()
+pconnector.load_table('public','employees')
+pconnector.get_table_schema('public','products')
+
+
+print('{}'.format(database),'{}'.format(user),'{}'.format(database))
+
+schema_name,table_name=input("Now enter the schema_name and table_name seperated by a space").split()
+pconnector.run_query("select * from {0}.{1}".format(schema_name,table_name))
+pconnector.list_tables()
+pconnector.load_table('{0}','{1}'.format(schema_name,table_name))
+pconnector.get_table_schema('{0}','{1}'.format(schema_name,table_name))
+
+"""
 
 
 
