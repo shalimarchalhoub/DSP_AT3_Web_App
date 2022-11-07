@@ -1,9 +1,7 @@
 import psycopg2
 from psycopg2 import OperationalError
 import pandas as pd
-import sys
-sys.path.insert(0,'/home/mahjabeen/src/database')
-from queries import get_tables_list_query, get_table_data_query, get_table_schema_query
+from src.database.queries import get_tables_list_query, get_table_data_query, get_table_schema_query
 
 
 class PostgresConnector:
@@ -292,45 +290,6 @@ class PostgresConnector:
         df=pd.read_sql_query(query,self.conn)
         print(df)
         return df
-
-"""
-pconnector=PostgresConnector('mahjabeen','mahjabeen','12345','localhost','5432')
-
-pconnector.run_query("select * from suppliers")
-pconnector.list_tables()
-pconnector.load_table('public','employees')
-pconnector.get_table_schema('public','products')
-
-
-
-pconnector=PostgresConnector('{}'.format(database),'{}'.format(user),'{}'.format(database))
-pconnector.run_query("select * from suppliers")
-pconnector.list_tables()
-pconnector.load_table('public','employees')
-pconnector.get_table_schema('public','products')
-print("list table starts")
-
-
-database,user,password=input("enter dbname,username,password seperated a space,").split()
-pconnector=PostgresConnector('{}'.format(database),'{}'.format(user),'{}'.format(database))
-
-pconnector.run_query("select * from suppliers")
-pconnector.list_tables()
-pconnector.load_table('public','employees')
-pconnector.get_table_schema('public','products')
-
-
-print('{}'.format(database),'{}'.format(user),'{}'.format(database))
-
-schema_name,table_name=input("Now enter the schema_name and table_name seperated by a space").split()
-pconnector.run_query("select * from {0}.{1}".format(schema_name,table_name))
-pconnector.list_tables()
-pconnector.load_table('{0}','{1}'.format(schema_name,table_name))
-pconnector.get_table_schema('{0}','{1}'.format(schema_name,table_name))
-
-"""
-
-
 
 
 
