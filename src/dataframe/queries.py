@@ -120,8 +120,8 @@ def get_date_tables_query(schema_name, table_name):
        "join information_schema.tables tab on tab.table_schema = col.table_schema " + \
        "and tab.table_name = col.table_name " + \
        "and tab.table_type = 'BASE TABLE' " + \
-       "where col.data_type in ('character varying', 'character', " + \
-       "'text', 'char', 'name') " + \
+       "where col.data_type in ('timestamp without time zone','timestamp with time zone', " + \
+       "'time with time zone','time without time zone','interval', 'date') " + \
        "and col.table_schema not in ('information_schema', 'pg_catalog') " + \
        "and col.table_schema = '" + schema_name + "' " + \
        "and col.table_name = '" + table_name + "' " + \

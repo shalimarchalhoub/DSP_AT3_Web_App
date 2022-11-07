@@ -67,8 +67,13 @@ def display_overall():
 
     """
     #=> To be filled by student
+    schema_name = st.session_state['schema_selected']
+    table_name = st.session_state['table_selected']
     dt = st.session_state['data']
     st.dataframe(dt.get_summary_df())
+    db = st.session_state['db']
+    st.dataframe(db.get_table_schema(schema_name,table_name))
+    
 
 def display_dataframes():
     """
@@ -98,5 +103,19 @@ def display_dataframes():
 
     """
     #=> To be filled by student
+    st.write('Explore Dataframe')
     dt = st.session_state['data']
-    st.dataframe(dt.df)
+    mxrow = dt.n_rows
+    nrow = st.slider('Select the number of rows to be displayed', min_value=5, max_value=mxrow)
+    method = st.radio("Exploration Method",('Head', 'Tail', 'Sample'))
+
+    if method == 'Head':
+        st.write('Top Rows of Selected Table')
+        st.dataframe(dt.get_head(nrow))
+    elif method == 'Tail':
+        st.write("Bottom Rows of Selected Table")
+        st.dataframe(dt.get_tail(nrow))
+    elif method == 'Sample':
+        st.write("Random Sample Rows of Selected Table")
+        st.dataframe(dt.get_sample(nrow))
+    

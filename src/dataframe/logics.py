@@ -32,8 +32,7 @@ class Dataset:
         self.schema_name = schema_name
         self.table_name = table_name
         self.db = db
-        sqlquery = "select * from " + self.table_name
-        self.df = pd.read_sql_query(sqlquery,db.conn)
+        self.df = db.load_table(schema_name,table_name)
         self.n_rows = 0
         self.n_cols = 0
         self.n_duplicates = 0
@@ -73,13 +72,11 @@ class Dataset:
         # => To be filled by student
         #if self.is_df_none() == False:
         self.set_dimensions()
-        st.write("sudah")
         self.set_duplicates()
         self.set_missing()
         self.set_numeric_columns()
         self.set_date_columns()
         self.set_text_columns()
-        #st.session_state['data'] = self
         
     def is_df_none(self):
         """
@@ -145,7 +142,9 @@ class Dataset:
         --------------------
         Description
         --------------------
-        -> set_duplicates (method): Class method that computes the number of duplicated of self.df and store it as attribute (self.n_duplicates)
+        -> set_duplicates (method): Class method that computes 
+        the number of duplicated of self.df and store 
+        it as attribute (self.n_duplicates)
 
         --------------------
         Parameters
@@ -167,7 +166,7 @@ class Dataset:
 
         """
         #=> To be filled by student
-        self.n_duplicates = self.df[self.df.duplicated()]
+        self.n_duplicates = self.df.duplicated().sum()
 
     def set_missing(self):
         """
@@ -230,9 +229,8 @@ class Dataset:
         """
         #=> To be filled by student
         query = get_numeric_tables_query(self.schema_name, self.table_name)
-        self.df = self.db.run_query(query)
-        #print(self.df)
-        self.num_cols = self.df["table_name"].values.tolist()
+        numdf = self.db.run_query(query)
+        self.num_cols = numdf["column_name"].values.tolist()
 
     def set_text_columns(self):
         """
@@ -266,9 +264,8 @@ class Dataset:
         """
         #=> To be filled by student
         query = get_text_tables_query(self.schema_name, self.table_name)
-        self.df = self.db.run_query(query)
-        #print(self.df)
-        self.text_cols = self.df["table_name"].values.tolist()
+        textdf = self.db.run_query(query)
+        self.text_cols = textdf["column_name"].values.tolist()
 
     def set_date_columns(self):
         """
@@ -299,8 +296,12 @@ class Dataset:
         """
         #=> To be filled by student
         query = get_date_tables_query(self.schema_name, self.table_name)
-        self.df = self.db.run_query(query)
-        self.date_cols  = self.df["table_name"].values.tolist()
+        #st.write(query)
+        #st.write(self.schema_name)
+        #st.write(self.table_name)
+        datedf = self.db.run_query(query)
+        #st.write(datedf)
+        self.date_cols  = datedf["column_name"].values.tolist()
 
     def get_head(self, n=5):
         """
@@ -418,7 +419,7 @@ class Dataset:
 
         """
         #=> To be filled by student
-        self.df = pd.DataFrame({'Description':['Table Name',
+        infodf = pd.DataFrame({'Description':['Table Name',
                                         'Number of Rowss',
                                         'Number of Columns',
                                         'Number of Duplicated Rows',
@@ -430,4 +431,4 @@ class Dataset:
                                 str(self.n_duplicates),
                                 str(self.n_missing),
                                 ]})
-        return self.df
+        return infodf
