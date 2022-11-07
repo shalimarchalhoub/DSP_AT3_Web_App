@@ -271,7 +271,7 @@ class PostgresConnector:
          -> table_name, type is string, it takes the name of the table as
 
          --------------------
-         Pseudo-Code
+         Pseudo-code
          --------------------
          -> This code helps the user to extracts the schema information of a table by calling
          get_table_schema_query(schema_name,table_name)
