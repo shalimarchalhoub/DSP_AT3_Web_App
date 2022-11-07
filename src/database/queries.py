@@ -1,11 +1,33 @@
 
 def get_tables_list_query():
+    """
+        --------------------
+        Description
+        --------------------
+        -> get_tables_list_query (method): Function that returns the query used for extracting the list of
+        tables from a Postgres table
+
+        --------------------
+        Parameters
+        --------------------
+        ->query: type is str, it holds the query to be returned
+
+        --------------------
+        Pseudo-Code
+        --------------------
+        -> This code helps the function to return the query
+
+        --------------------
+        Returns
+        --------------------
+        ->type is str. query is returned
+
+        """
 
 
-    query=("""SELECT table_name
-                 as table_name
-                 FROM   information_schema.tables
-                 WHERE table_schema != 'information_schema' AND
+    query=("""select table_name as table_name
+                 from   information_schema.tables
+                 where table_schema != 'information_schema' and
                  table_schema != 'pg_catalog'""")
 
     return query
@@ -13,6 +35,30 @@ def get_tables_list_query():
 
 
 def get_table_data_query(schema_name, table_name):
+    """
+        --------------------
+        Description
+        --------------------
+        -> get_table_data_query (method): Function that returns the query used for extracting the content 
+        of a Postgres table
+
+        --------------------
+        Parameters
+        Parameters
+        --------------------
+        ->query: type is str, it holds the query to be returned
+
+        --------------------
+        Pseudo-Code
+        --------------------
+        -> This code helps the function to return the query
+
+        --------------------
+        Returns
+        --------------------
+        ->type is str. query is returned
+
+        """
 
     query=("""select * from {0}.{1}""".format(schema_name,table_name))
     return query
@@ -20,6 +66,29 @@ def get_table_data_query(schema_name, table_name):
 
 
 def get_table_schema_query(schema_name, table_name):
+    """
+        --------------------
+        Description
+        --------------------
+        -> get_table_schema_query (method): Function that returns the query used for extracting the list of
+        columns from a Postgres table and their information
+
+        --------------------
+        Parameters
+        --------------------
+        ->query: type is str, it holds the query to be returned
+
+        --------------------
+        Pseudo-Code
+        --------------------
+        -> This code helps the function to return the query
+
+        --------------------
+        Returns
+        --------------------
+        ->type is str. query is returned
+
+        """
 
     query=("""select c.table_name,c.column_name
           ,c.data_type,(case when k.COLUMN_NAME=c.column_name then c.column_name else '' end)  as primary_key
