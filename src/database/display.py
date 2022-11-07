@@ -2,13 +2,8 @@ import streamlit as st
 import pandas as pd
 import psycopg2
 from psycopg2 import OperationalError
-import numpy as np
-import sys
-sys.path.insert(0,'/home/mahjabeen/src/database/')
-from display_fab import read_data
-from logics import PostgresConnector
-#from config import set_session_state
-#from src.database.logics import PostgresConnector
+import streamlit as st
+from src.database.logics import PostgresConnector
 from src.dataframe.display import read_data
 
 
@@ -57,7 +52,7 @@ def display_db_connection_menu():
              global conn
              conn=None
              submit = st.form_submit_button("Connect")
-             #if conn is None:
+
              if submit:
                 try:
                     conn = psycopg2.connect("""dbname={0} user={1}
@@ -134,7 +129,7 @@ def display_table_selection():
 
         """
 
-    #if conn is not None:
+
     if submit:
 
             cursor = conn.cursor()
@@ -148,8 +143,18 @@ def display_table_selection():
             df.loc[-1] = 'select'
             df.index = df.index + 1
             df = df.sort_index()
-            option = st.selectbox('Select table name', df,index=0,key='option')
-            data1=read_data()
+
+            option=st.selectbox('Select table name', df, key='option')
+
+            if st.session_state.option_State:
+                st.session_state.option_State=option
+
+
+
+            data1 = read_data()
+
+
+
 
 
 
