@@ -9,19 +9,7 @@ from display_fab import read_data
 from logics import PostgresConnector
 #from config import set_session_state
 #from src.database.logics import PostgresConnector
-#rom src.dataframe.display import read_data
-"""
-global username
-username = ''
-global password
-password = ''
-global db_Host
-db_Host = ''
-global db_Name
-db_Name = ''
-global db_Port
-db_port = 0
-"""
+from src.dataframe.display import read_data
 
 
 def display_db_connection_menu():
@@ -31,22 +19,28 @@ def display_db_connection_menu():
      display_db_connection_menu-> This functions display the menu to connect
      to the database
      ------
-     Parameters->username,password,db_Name,db_Host,db_port are used to 
-     store the values to these variables when the user inputs the menu option 
-     to connect to the database
+     Parameters
+     ------
+     ->username: type is str, it stores the username entered by the user
+     ->password: type is str, it stores the password entered by the user
+     ->db_Name: type is str, it stores the databse name entered by the user
+     ->db_Host: type is str, it stores the host name entered by the user
+     ->db_port: type is str,It sotres the port number entered by the user.
+     ->conn: type is str, it stores the connection to the Postgres database
+
      -------
-     pseudo-code--It achieves the requirement by allowing the user to input the data
-     on the database menu option to connect to the database, if all the values
-     are entered correctly, it will connect to the Postgres database
+     pseudo-code--
      ----
-     return-> it returns on the screen whether the user is succesfully connected to
-     the databse, or the attempt was unsuccesful.
+     -> This code creates a menu button, where the user can enter the details to login
+     to the Postgres database
+     ---
+     return
+     ---
+     ->type is str,it displays on the screen whether the user is succesfully connected to
+     the databse, or the attempt was unsuccesful.Also, it returns the connection establishement so that
+     the user can pull or push data/request to the Postgres databse.
      ----
     """
-
-
-
-
 
     with     st.form(key="my_form"):
              global username
@@ -60,34 +54,88 @@ def display_db_connection_menu():
              global db_port
              db_Port = st.text_input("Database Port:")
              global submit
-             submit = st.form_submit_button("Connect")
              global conn
+             conn=None
+             submit = st.form_submit_button("Connect")
+             #if conn is None:
              if submit:
-                     try:
-                         conn = psycopg2.connect("""dbname={0} user={1}
+                try:
+                    conn = psycopg2.connect("""dbname={0} user={1}
                                                  password
                                                  ={2}""".format(db_Name, username, password))
+                    st.write("connection to database established")
 
-                         st.write("Connection to database established")
-                         connect_db()
-                         display_table_selection()
-                     except:
-                         print("Authentication error, please try again!")
+                except (Exception,psycopg2.DatabaseError) as error:
+                    st.write(error)
+
+
 
 def connect_db():
+    """
+        --------------------
+        Description
+        --------------------
+        -> connect_db (function): Function that connects to a database and instantiate a PostgresConnector
+        class accordingly
 
-    """
-     connect_db (function):-> Function that connects to a database and instantiate a PostgresConnector class accordingly
-     Sudo-code-> it helps the function to connect to a database and instantiate a postgresconnector class
-     return->it return the message saying that whether it is connected to a database or not
-    """
-    connectdb=PostgresConnector('{}'.format(db_Name),'{}'.format(username),'{}'.format(password))
-    connectdb.open_connection()
-    print("connection to the database is established and class instantiated")
+        --------------------
+        Parameters
+        --------------------
+        ->connectdb:type is Object, Object used to instantiate PostgresConnector class
+
+        --------------------
+        Pseudo-Code
+        --------------------
+        ->This code hepls connect to a database  and instantiate a PostgresConnector
+        class accordingly
+
+        --------------------
+        Returns
+        --------------------
+        ->It returns the connection to the database
+
+        """
+    if submit:
+       connectdb=PostgresConnector('{}'.format(db_Name),'{}'.format(username),'{}'.format(password))
+       connectdb.open_connection()
+       print("connection to the database is established and class instantiated")
 
 def display_table_selection():
+    """
+        --------------------
+        Description
+        --------------------
+        -> display_table_selection (function): Function that displays the selection box for selecting the
+        table to be analysed and triggers the loading of data (read_data())
 
+        --------------------
+        Parameters
+        --------------------
+        ->cursor: type is cursor datatype, It is used to hold the connection to the database
+        so that the user can do a transaction
+        ->data: type is string/two-dimensional tabular structure ,It holds the data fetched by the cursor from the database.
+        ->df: type is string/two-dimensional tabular structure with labelled axes(rows and columns). It holds the information
+        after being converted into a dataframe.
 
+        --------------------
+        Pseudo-Code
+        --------------------
+        ->This code produces the table selection for the user to select from.
+        -> df.loc[-1] = 'select': adding 'select' as the first row to the dataframe
+        ->df.index = df.index + 1:correcting the index
+        ->df = df.sort_index(): Sorting the index.
+        ->option : type is str, displays the table selection
+        ->data1: type is str, loads the read_data()
+
+        --------------------
+        Returns
+        --------------------
+        ->type is str, it returns the table selection menu/dropdown menu
+
+        """
+
+    #if conn is not None:
+    if submit:
 
             cursor = conn.cursor()
             query = ("""select concat(table_schema,'.',table_name) from information_schema.tables
@@ -100,12 +148,19 @@ def display_table_selection():
             df.loc[-1] = 'select'
             df.index = df.index + 1
             df = df.sort_index()
-            option = st.selectbox('Select table name', df)
-            data=read_data()
+            option = st.selectbox('Select table name', df,index=0,key='option')
+            data1=read_data()
+
+
+
+
 
 
 
 display_db_connection_menu()
-
+connect_db()
+display_table_selection()
+for item in st.session_state.items():
+    st.write(item)
 
 
