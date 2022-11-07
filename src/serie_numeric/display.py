@@ -1,8 +1,9 @@
 import streamlit as st
 
+from src.dataframe.logics import Dataset
 from src.serie_numeric.logics import NumericColumn
 
-def display_numerics():
+def display_numerics(dataset:Dataset):
     """
     --------------------
     Description
@@ -12,24 +13,23 @@ def display_numerics():
     --------------------
     Parameters
     --------------------
-    => To be filled by student
     -> name (type): description
-
+    col_name (any): the name of column
+    i(int) : number of order
     --------------------
     Pseudo-Code
     --------------------
-    => To be filled by student
-    -> pseudo-code
-
+    for all the column: 
+    combine the name and number of oder
     --------------------
     Returns
     --------------------
-    => To be filled by student
-    -> (type): description
+    disply the name of column and the order
 
     """
-    => To be filled by student
-
+    for col_name, i in zip(dataset.num_cols, range(1,len(dataset.num_cols)+1)):
+        display_numeric(col_name, i)
+    
 def display_numeric(col_name, i):
     """
     --------------------
@@ -40,20 +40,28 @@ def display_numeric(col_name, i):
     --------------------
     Parameters
     --------------------
-    => To be filled by student
     -> name (type): description
+    session_states(str) : 
 
     --------------------
     Pseudo-Code
     --------------------
-    => To be filled by student
-    -> pseudo-code
-
+    call the NumeriColumn()
+    use expander to create summary table by calling the get_summary_df
+    use expander to create summary table by calling the set_histogram()
+    use expander to create summary table by calling the numeric_column.histogram
     --------------------
-    Returns
+     Returns
     --------------------
-    => To be filled by student
-    -> (type): description
+    Return summary table, histogram and most frequent values table.
 
     """
-    => To be filled by student
+    numeric_column = NumericColumn(session_states['schema_selected'],
+                                   session_states['table_name'],
+                                   col_name=col_name)
+    
+
+        
+    
+        
+        

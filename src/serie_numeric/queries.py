@@ -8,23 +8,20 @@ def get_negative_number_query(schema_name, table_name, col_name):
     --------------------
     Parameters
     --------------------
-    => To be filled by student
-    -> name (type): description
+    column from a Postgres table
 
     --------------------
     Pseudo-Code
     --------------------
-    => To be filled by student
-    -> pseudo-code
+    count the number of negative number from the table 
 
     --------------------
     Returns
     --------------------
-    => To be filled by student
-    -> (type): description
+    the number of negaive number(int)
 
     """
-    => To be filled by student
+    return f'select count({col_name}) from {schema_name}.{table_name} where {col_name} < 0'
 
 def get_std_query(schema_name, table_name, col_name):
     """
@@ -36,23 +33,20 @@ def get_std_query(schema_name, table_name, col_name):
     --------------------
     Parameters
     --------------------
-    => To be filled by student
-    -> name (type): description
+    column from a Postgres table
 
     --------------------
     Pseudo-Code
     --------------------
-    => To be filled by student
-    -> pseudo-code
+    calculate the standard deviation from the table 
 
     --------------------
     Returns
     --------------------
-    => To be filled by student
-    -> (type): description
+    query that calulate the standard deviation(float)
 
     """
-    => To be filled by student
+    return f'select std({col_name}) from {schema_name}.{table_name}'
 
 def get_unique_query(schema_name, table_name, col_name):
     """
@@ -64,20 +58,18 @@ def get_unique_query(schema_name, table_name, col_name):
     --------------------
     Parameters
     --------------------
-    => To be filled by student
-    -> name (type): description
+    column from a Postgres table
 
     --------------------
     Pseudo-Code
     --------------------
-    => To be filled by student
-    -> pseudo-code
+    select all the distinct from the table 
 
     --------------------
     Returns
     --------------------
-    => To be filled by student
-    -> (type): description
+    query used for computing the number of unique values of a column from a Postgres table
+
 
     """
-    => To be filled by student
+    return f'select distinct {col_name} from {schema_name}.{table_name}'

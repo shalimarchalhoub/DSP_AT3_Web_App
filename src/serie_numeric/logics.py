@@ -1,4 +1,3 @@
-import streamlit as st
 import pandas as pd
 import altair as alt
 
@@ -33,8 +32,34 @@ class NumericColumn:
     -> frequent (int): Datframe containing the most frequest value of a serie (optional)
 
     """
-    => To be filled by student
-
+    def __init__(self, schema_name, table_name, col_name) -> None:
+        
+        
+        self.df = pd.DataFrame()
+        self.serie = None
+        # not sure why PostgresConnector require both database and host 
+        self.db = PostgresConnector(session_states['db_host'],
+                          session_states['db_user'],
+                          session_states['db_pass'],
+                          session_states['db_host'],
+                          session_states['db_port']
+                          )
+        self.schema_name = schema_name
+        self.table_name = table_name
+        self.col_name = col_name
+        
+        self.n_unique = None
+        self.col_mean = None
+        self.col_std = None
+        self.col_min = None
+        self.col_max = None
+        self.col_median = None
+        self.n_missing = None
+        
+        self.n_negatives = None
+        self.histogram = None
+        self.frequent = None
+    
     def set_data(self):
         """
         --------------------
@@ -45,23 +70,37 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
+        pass
         -> name (type): description
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
         -> pseudo-code
-
+        call all the methods: 
+        set_zeros()
+        set_missing()
+        set_negatives()
+        set_unique()
+        set_mean()
+        set_min()
+        set_max()
+        set_median()
+        set_std()
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
-
+        all the requested information
         """
-        => To be filled by student
+        self.set_zeros()
+        self.set_missing()
+        self.set_negatives()
+        self.set_unique()
+        self.set_mean()
+        self.set_min()
+        self.set_max()
+        self.set_median()
+        self.set_std()
 
     def is_serie_none(self):
         """
@@ -73,23 +112,20 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
         -> name (type): description
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        return None if self.serie is empty or none  
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        boolean
 
         """
-        => To be filled by student
+        return self.serie == None
 
     def set_unique(self):
         """
@@ -101,23 +137,26 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
+        
         -> name (type): description
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
+        pass
         -> pseudo-code
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
+        pass
         -> (type): description
 
         """
-        => To be filled by student
+        
+        self.n_unique = self.db.run_query(get_unique_query(self.schema_name,
+                                                                           self.table_name,
+                                                                           self.col_name)).count().item()
 
     def set_missing(self):
         """
@@ -129,23 +168,21 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        column
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        sum all the null in column
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        the number of null(int)
 
         """
-        => To be filled by student
+        self.n_missing = self.serie.isnull().sum().item()
+
 
     def set_zeros(self):
         """
@@ -157,23 +194,20 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        column 
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        count the number of 0 in each column
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        number of times a serie has values equal to 0 (int)
 
         """
-        => To be filled by student
+        self.n_zeros = self.serie[self.serie == 0].count().item()
 
     def set_negatives(self):
         """
@@ -185,23 +219,26 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
+        pass
         -> name (type): description
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
+        pass
         -> pseudo-code
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+    
+        -> number of times a serie has negative values(int)
 
         """
-        => To be filled by student
+      
+        self.n_negatives = self.db.run_query(get_negative_number_query(self.schema_name,
+                                                                       self.table_name,
+                                                                       self.col_name)).count().item()
 
     def set_mean(self):
         """
@@ -213,23 +250,21 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        column
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        computes the average value of a serie
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        pass
+        -> mean(int): average value of a serie
 
         """
-        => To be filled by student
+        self.col_mean = self.serie.mean().item()
 
     def set_std(self):
         """
@@ -241,23 +276,26 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        serie
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
+        
         -> pseudo-code
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        pass
+        -> standard deviation(int): standard deviation value of a serie using a SQL query
 
         """
-        => To be filled by student
+       
+        res_df = self.db.run_query(get_std_query(self.schema_name,
+                                                                 self.table_name,
+                                                                 self.col_name))
+        self.col_std = res_df.iloc[0].item()
     
     def set_min(self):
         """
@@ -269,23 +307,21 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        serie
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        computes the minimum value of a serie
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        pass
+        minimum value of a serie (int)
 
         """
-        => To be filled by student
+        self.col_min = self.serie.min().item()
 
     def set_max(self):
         """
@@ -297,23 +333,20 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        serie
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        computes the maximum value of a serie
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        maximum value of a serie (int)
 
         """
-        => To be filled by student
+        self.col_max = self.serie.max().item()
 
     def set_median(self):
         """
@@ -325,23 +358,22 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        serie
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        computes the median value of a serie
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        pass
+        median value of a serie(int)
 
         """
-        => To be filled by student
+        self.col_median = int(self.serie.median().item())
+
 
     def set_histogram(self):
         """
@@ -353,23 +385,27 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
+        pass
         -> name (type): description
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
+        pass
         -> pseudo-code
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
+        pass
         -> (type): description
 
         """
-        => To be filled by student
+        self.histogram = alt.Chart(self.serie).mark_bar().encode(
+            alt.X(f'{self.col_name}', bin=alt.BinParams(maxbins = 50)),
+            alt.Y(f'count({self.col_name})'),
+        )
+        
 
     def set_frequent(self, end=20):
         """
@@ -381,25 +417,41 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        serie
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        calculate the percentage with value 
+        calculate the occurrence with value 
+        combine the percentage and occurrence by value
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        the most frequest value of a serie
+
 
         """
-        => To be filled by student
+        t = pd.DataFrame(self.serie[f'{self.col_name}'].value_counts(normalize =True))
+        t = t.reset_index()
+        t.columns = ['value', 'percentage']
+        
+        d =  pd.DataFrame(self.serie[f'{self.col_name}'].value_counts())
+        d = d.reset_index()
+        d.columns = ['value', 'occurrence']
+        d = d.sort_values(by='value')
+        d = d.reset_index(drop=True)
+        
+        d = d.join(t.set_index('value'), on='value')
+        d = d.sort_values(by='occurrence', ascending=False)
+        d = d.reset_index(drop=True)
+        
+        self.frequent = d.head(end)
+        
+        
 
-    def get_summary_df(self,):
+    def get_summary_df(self) -> pd.DataFrame:
         """
         --------------------
         Description
@@ -409,20 +461,46 @@ class NumericColumn:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        self.n_unique
+        self.n_missing,
+        self.n_zeros,
+        self.n_negatives,
+        self.col_mean,
+        self.col_std,
+        self.col_min,
+        self.col_max,
+        self.col_median
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        formats all requested information
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        summary table
 
         """
-        => To be filled by student
+        self.df = pd.DataFrame({'Description':['Number of Unique Values',
+                                                'Number of Rows with Missing Values',
+                                               'Number of Rows with 0',
+                                               'Number of Rows with Negative Values',
+                                               'Average Value',
+                                               'Standard Deviation Value',
+                                               'Minimum Value',
+                                               'Maximum Value',
+                                               'Median Value'
+                                               ],
+                            'Values':[str(self.n_unique),
+                                      str(self.n_missing),
+                                      str(self.n_zeros),
+                                      str(self.n_negatives),
+                                      str(self.col_mean),
+                                      str(self.col_std),
+                                      str(self.col_min),
+                                      str(self.col_max),
+                                      str(self.col_median)
+                                      ]})
+        return self.df
+
