@@ -49,7 +49,7 @@ class DateColumn:
         self.n_empty_1900 = 0
         self.n_empty_1970 = 0
         self.barchart = 0
-        self.frequent = 0
+        self.frequent = pd.DataFrame()
 
     def set_data(self):
         """
@@ -71,14 +71,25 @@ class DateColumn:
         --------------------
         Returns
         --------------------
-        This function only computes the methods, not returning anything
+        Returns the result of the methods listed, set_unique(), set_missing(), set_min(), set_max() once called
 
         """
-        if not self.is_serie_none():
-            self.set_unique()
-            self.set_missing()
-            self.set_min()
-            self.set_max()
+        query = "select " + self.col_name+ "  from " + self.schema_name + "." + self.table_name
+        self.serie = pd.to_datetime(self.db.run_query(query).squeeze())
+        #if not self.is_serie_none():
+        self.set_unique()
+        self.set_missing()
+        self.set_min()
+        self.set_max()
+        self.set_weekday()
+        self.set_weekend()
+        self.set_future()
+        self.set_empty_1900()
+        self.set_empty_1970()
+        self.set_barchart()
+        self.set_frequent()
+        
+
 
     def is_serie_none(self):
         """
@@ -121,12 +132,12 @@ class DateColumn:
         --------------------
         Pseudo-Code
         --------------------
-        => A function that checks whether the unique values of a series and compute them
+        => A function that checks whether the unique values of a series and compute them, and return the total value
 
         --------------------
         Returns
         --------------------
-        => The function only computes the total number of unique value in the serie, not returning anything
+        => The total number of unique value in the serie
 
         """
         self.n_unique = self.serie.nunique()
@@ -141,17 +152,20 @@ class DateColumn:
         --------------------
         Parameters
         --------------------
-        => No parameters
+        => To be filled by student
+        -> name (type): description
 
         --------------------
         Pseudo-Code
         --------------------
-        => A function that computes the total missing value in the column, not returning anything
+        => To be filled by student
+        -> pseudo-code
 
         --------------------
         Returns
         --------------------
-        => This function only computes the count, not returning anything
+        => To be filled by student
+        -> (type): description
 
         """
         self.n_missing = self.serie.isnull().sum().sum()
@@ -161,23 +175,30 @@ class DateColumn:
         --------------------
         Description
         --------------------
-        -> set_min (method): Class method that computes the minimum value of a serie using a SQL query (get_min_date_query())
+        -> set_min (method): Class method that computes the minimum 
+        value of a serie using a SQL query (get_min_date_query())
 
         --------------------
         Parameters
         --------------------
-        => No parameters
+        => To be filled by student
+        -> name (type): description
 
         --------------------
         Pseudo-Code
         --------------------
-        => A function that calculates the minimum date in the column using the the function get_min_date_query from serie_date queries.py
+        => To be filled by student
+        -> pseudo-code
+
         --------------------
         Returns
         --------------------
-        => This function only computes/calculates the minimum date, does not return anything
+        => To be filled by student
+        -> (type): description
+
         """
-        self.col_min = self.db.run_query(get_min_date_query())
+        self.col_min = self.db.run_query(get_min_date_query(self.schema_name,self.table_name,self.col_name)).squeeze()
+        self.col_min = pd.Timestamp(self.col_min)
 
     def set_max(self):
         """
@@ -189,16 +210,20 @@ class DateColumn:
         --------------------
         Parameters
         --------------------
-        => No parameters
+        => To be filled by student
+        -> name (type): description
 
         --------------------
         Pseudo-Code
         --------------------
-        => A function that calculates the maximum date in the column 
+        => To be filled by student
+        -> pseudo-code
+
         --------------------
         Returns
         --------------------
-        => This function only computes/calculates the maximum date, does not return anything
+        => To be filled by student
+        -> (type): description
 
         """
         self.col_max = self.serie.max()
@@ -208,24 +233,30 @@ class DateColumn:
         --------------------
         Description
         --------------------
-        -> set_weekend (method): Class method that computes the number of times a serie has dates falling during weekend using a SQL query (get_weekend_count_query())
+        -> set_weekend (method): Class method that computes the number of times 
+        a serie has dates falling during weekend using a SQL query 
+        (get_weekend_count_query())
 
         --------------------
         Parameters
         --------------------
-        => No parameters
+        => To be filled by student
+        -> name (type): description
 
         --------------------
         Pseudo-Code
         --------------------
-        => This function computes the count of weekend days in the column using query from query.py file, the get_weekend_count_query() function
+        => To be filled by student
+        -> pseudo-code
+
         --------------------
         Returns
         --------------------
-        => This function only computes the total count, but does not return anything
+        => To be filled by student
+        -> (type): description
 
         """
-        self.n_weekend = self.db.run_query(get_weekend_count_query())
+        self.n_weekend = self.db.run_query(get_weekend_count_query(self.schema_name,self.table_name,self.col_name)).squeeze()
 
     def set_weekday(self):
         """
@@ -237,46 +268,55 @@ class DateColumn:
         --------------------
         Parameters
         --------------------
-        => No parameters
+        => To be filled by student
+        -> name (type): description
+
         --------------------
         Pseudo-Code
         --------------------
-        => This function computes the count of weekdays in the column
+        => To be filled by student
+        -> pseudo-code
 
         --------------------
         Returns
         --------------------
-        => This function only computes the count of dates falling on weekdays, but does not return anything
+        => To be filled by student
+        -> (type): description
 
         """
-        if self.serie.dt.weekday<5:
-            self.n_weekday = self.serie.dt.weekday.count()
+        dtday = pd.to_datetime(self.serie).dt.weekday
+        self.n_weekday = (dtday<5).sum()
 
     def set_future(self):
         """
         --------------------
         Description
         --------------------
-        -> set_future (method): Class method that computes the number of times a serie has dates falling in the future
+        -> set_future (method): Class method that computes 
+        the number of times a serie has dates falling in the future
 
         --------------------
         Parameters
         --------------------
-        => No parameters
+        => To be filled by student
+        -> name (type): description
 
         --------------------
         Pseudo-Code
         --------------------
-        => This function calculates the dates in the future counted from today 
+        => To be filled by student
+        -> pseudo-code
 
         --------------------
         Returns
         --------------------
-        => This function only calculates the method, it does not return anything
+        => To be filled by student
+        -> (type): description
 
         """
         present_date = pd.Timestamp.today() 
         for dates in self.serie:
+            dates = pd.to_datetime(dates)
             if dates>present_date:
                 self.n_future += 1
 
@@ -290,19 +330,23 @@ class DateColumn:
         --------------------
         Parameters
         --------------------
-        => No parameters
+        => To be filled by student
+        -> name (type): description
 
         --------------------
         Pseudo-Code
         --------------------
-        => The function that calculates how many dates in the column are equal to 1900-01-01 using the query from serie_date query.py get_1900_count_query() function
+        => To be filled by student
+        -> pseudo-code
+
         --------------------
         Returns
         --------------------
-        => This function does not return anything, only calculating the count of dates falling on 1900-01-01
+        => To be filled by student
+        -> (type): description
 
         """
-        self.n_weekend = self.db.run_query(get_weekend_count_query())
+        self.n_empty_1900 = self.db.run_query(get_1900_count_query(self.schema_name,self.table_name,self.col_name)).squeeze()
 
     def set_empty_1970(self):
         """
@@ -314,21 +358,24 @@ class DateColumn:
         --------------------
         Parameters
         --------------------
-        => No parameters
+        => To be filled by student
+        -> name (type): description
 
         --------------------
         Pseudo-Code
         --------------------
-        => This function calculates the count of dates in the column falling on 1970-01-01
+        => To be filled by student
+        -> pseudo-code
 
         --------------------
         Returns
         --------------------
-        => This function only computes the count of dates falling on 1970-01-01 and returns nothing
+        => To be filled by student
+        -> (type): description
 
         """
         for dates in self.serie:
-            new = pd.Series("dates")
+            new = pd.Series(dates)
 
             day = pd.to_datetime(new).dt.day
             day.values
@@ -350,35 +397,8 @@ class DateColumn:
         --------------------
         Description
         --------------------
-        -> set_barchart (method): Class method that computes the Altair barchart displaying the count for each value of a serie
-
-        --------------------
-        Parameters
-        --------------------
-        => No parameters
-
-        --------------------
-        Pseudo-Code
-        --------------------
-        => This function processes the barchart using Altair library using the count for each value in accordance to their date time
-
-        --------------------
-        Returns
-        --------------------
-        => This function does not return anything
-
-        """
-        count_serie = self.serie.count()
-        dataframed = pd.DataFrame(count_serie, columns=["Date Time", "Count"])
-        self.barchart = alt.Chart(dataframed).mark_bar().encode(x = "Date Time", y = "Count", color = 'c')
-        return self.barchart
-      
-    def set_frequent(self, end=20):
-        """
-        --------------------
-        Description
-        --------------------
-        -> set_frequent (method): Class method that computes the Dataframe containing the most frequest value of a serie
+        -> set_barchart (method): Class method that computes 
+        the Altair barchart displaying the count for each value of a serie
 
         --------------------
         Parameters
@@ -389,25 +409,82 @@ class DateColumn:
         --------------------
         Pseudo-Code
         --------------------
-        => This function calculates the top 20 most frequent values in the serie and store them in a dataframe
+        => To be filled by student
+        -> pseudo-code
 
         --------------------
         Returns
         --------------------
-        => This function only calculates the top 20 most frequent values, it does not return anything
+        => To be filled by student
+        -> (type): description
 
         """
         MyDict={}
+        #serie=['2001-12-01','2001-12-02','2001-11-01','2001-10-01','2001-10-01','2001-09-01','2000-09-01','2000-10-01']
+        for dates in self.serie: 
+            if str(dates) in MyDict:
+                MyDict[str(dates)] += 1
+            else:
+                MyDict[str(dates)] = 1
 
-        newserie = self.serie.to_string()
-        for dates in newserie: 
-            MyDict[dates] = MyDict.get(dates, 0)+1
+        sortedMyDict = dict(sorted(MyDict.items(), key=lambda item: item[1], reverse=True))
+        datadict = {"value":sortedMyDict.keys(),"occurrence":sortedMyDict.values()}
+        newdf = pd.DataFrame.from_dict(datadict)
+        newdf['value']= pd.to_datetime(newdf['value'])
+        print(newdf)
+        newdf.dropna(inplace=True)
+        newdf["value"] = newdf['value'].dt.year.astype(str) + "-" + newdf['value'].dt.month.astype(str)
+        dfdatetime = newdf.groupby( newdf["value"], as_index=False)['occurrence'].sum()
+        print(dfdatetime)
+        dfdatetime['value']= pd.to_datetime(dfdatetime['value'])  
+        self.barchart = alt.Chart(dfdatetime).mark_bar().encode(
+            x = "value",
+            y = "occurrence"
+        )
+            
+      
+    def set_frequent(self, end=20):
+        """
+        --------------------
+        Description
+        --------------------
+        -> set_frequent (method): Class method that computes the 
+        Dataframe containing the most frequest value of a serie
+
+        --------------------
+        Parameters
+        --------------------
+        => To be filled by student
+        -> name (type): description
+
+        --------------------
+        Pseudo-Code
+        --------------------
+        => To be filled by student
+        -> pseudo-code
+
+        --------------------
+        Returns
+        --------------------
+        => To be filled by student
+        -> (type): description
+
+        """
+        MyDict={}
+        for dates in self.serie: 
+            if str(dates) in MyDict:
+                MyDict[str(dates)] += 1
+            else:
+                MyDict[str(dates)] = 1
+
+        sortedMyDict = dict(sorted(MyDict.items(), key=lambda item: item[1], reverse=True))
+        datadict = {"value":sortedMyDict.keys(),"occurrence":sortedMyDict.values()}
+        newdf = pd.DataFrame.from_dict(datadict)
+        nrow = len(newdf)
+        newdf['percent'] = newdf['occurrence']*100/nrow
+        self.frequent = newdf.head(end)
         
-        newdf = pd.DataFrame([MyDict.keys,MyDict.values])
-        newdf['percent'] = newdf[MyDict.values]*100/len(MyDict.values)
-        newdf = newdf.head(20)
-        self.frequent = newdf
-
+        
     def get_summary_df(self):
         """
         --------------------
@@ -418,19 +495,23 @@ class DateColumn:
         --------------------
         Parameters
         --------------------
-        => No parameters
+        => To be filled by student
+        -> name (type): description
 
         --------------------
         Pseudo-Code
         --------------------
-        => A function that puts all the variables previously stored into a dataframe containing its name/description along with the values.
+        => To be filled by student
+        -> pseudo-code
 
         --------------------
         Returns
         --------------------
-        => The function returns the dataframe containing all the values stored, along with the column names
+        => To be filled by student
+        -> (type): description
 
         """
+        self.set_data()
         st.header(self.col_name)
         dfdate = pd.DataFrame({'Description':['Number of Unique Values',
                                                'Number of Missing Values',
