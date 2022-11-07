@@ -3,7 +3,8 @@ def get_min_date_query(schema_name, table_name, col_name):
     --------------------
     Description
     --------------------
-    -> get_min_date_query (method): Function that returns the query used for computing the earliest date of a datetime column from a Postgres table
+    -> get_min_date_query (method): Function that returns the query used for 
+    computing the earliest date of a datetime column from a Postgres table
 
     --------------------
     Parameters
@@ -52,7 +53,8 @@ def get_weekend_count_query(schema_name, table_name, col_name):
 
     """
     query = "SELECT count(*) FROM " + schema_name + "." + table_name + \
-        " WHERE EXTRACT(dow FROM date '" + col_name + "') = 6 and EXTRACT(dow FROM date '" + col_name + "') = 0"
+        " WHERE EXTRACT(dow FROM " + col_name + ") = 6 or EXTRACT(dow FROM " + col_name + ") = 0"
+
     return query
 
 def get_1900_count_query(schema_name, table_name, col_name):
@@ -80,5 +82,6 @@ def get_1900_count_query(schema_name, table_name, col_name):
     => the count of value in a datetime column which has the value equal to 01-01-1990
 
     """
-    query = "SELECT " + col_name + "FROM " + schema_name + "." + table_name + "WHERE " + col_name + "= '1900-01-01'"
+    query = "SELECT COUNT(*) FROM " + schema_name + "." + table_name + \
+            " WHERE " + col_name + "= '1900-01-01'"
     return query
