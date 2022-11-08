@@ -36,9 +36,26 @@ The Requirements for this project as listed below
 
 In order to run the code is to open the command Prompt and write the below command
 ```
-docker run -p 8501:8051 -e PYTHONPATH="${PYTHONPATH}:/app" -it python_streamlit_app:latest
+git clone https://github.com/shalimarchalhoub/DSP_AT3_Web_App/
 ```
-Next, open 
+
+After that, chage the direcotry to the file you cloned
+
+```
+cd DSP_AT3_Web_App
+```
+
+Next, we build the container via the command below
+
+```
+docker-compose up -d --build
+```
+
+And last, run the image through the below command
+```
+d docker run -p 8501:8051 -e PYTHONPATH="${PYTHONPATH}:/app" -it dsp_at3_web_app-streamlit:latest
+```
+Next open
 ```
 http://localhost:8501
 ```
