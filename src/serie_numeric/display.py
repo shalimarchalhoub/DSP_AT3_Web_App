@@ -1,9 +1,8 @@
 import streamlit as st
 
-from src.dataframe.logics import Dataset
 from src.serie_numeric.logics import NumericColumn
 
-def display_numerics(dataset:Dataset):
+def display_numerics():
     """
     --------------------
     Description
@@ -19,6 +18,7 @@ def display_numerics(dataset:Dataset):
     --------------------
     Pseudo-Code
     --------------------
+    get the session state from the streamlit
     for all the column: 
     combine the name and number of oder
     --------------------
@@ -27,6 +27,9 @@ def display_numerics(dataset:Dataset):
     disply the name of column and the order
 
     """
+    config = st.session_state
+    dataset = Dataset(config['schema_selected'], config['table_selected'], config['db'])
+    dataset.set_data()
     for col_name, i in zip(dataset.num_cols, range(1,len(dataset.num_cols)+1)):
         display_numeric(col_name, i)
     
