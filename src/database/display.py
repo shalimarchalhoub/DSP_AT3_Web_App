@@ -2,9 +2,13 @@ import streamlit as st
 import pandas as pd
 import psycopg2
 from psycopg2 import OperationalError
-import streamlit as st
 from src.database.logics import PostgresConnector
 from src.dataframe.display import read_data
+
+if 'CONNECTED' not in st.session_state:
+    st.session_state.CONNECTED =  False
+def _connect_form_cb(connect_status):
+    st.session_state.CONNECTED = connect_status
 
 
 def display_db_connection_menu():
@@ -41,7 +45,7 @@ def display_db_connection_menu():
              global username
              username = st.text_input("Username:")
              global password
-             password = st.text_input("Password:")
+             password = st.text_input("Password:",type="password")
              global db_Host
              db_Host = st.text_input("Database Host:")
              global db_Name
@@ -51,9 +55,10 @@ def display_db_connection_menu():
              global submit
              global conn
              conn=None
-             submit = st.form_submit_button("Connect")
+             submit = st.form_submit_button("🟢 Connect", on_click=_connect_form_cb, args=(True,),
+                                            disabled=st.session_state.CONNECTED)
 
-             if submit:
+             if st.session_state.CONNECTED:
                 try:
                     conn = psycopg2.connect("""dbname={0} user={1}
                                                  password
@@ -130,7 +135,7 @@ def display_table_selection():
         """
 
 
-    if submit:
+    if st.session_state.CONNECTED:
 
             cursor = conn.cursor()
             query = ("""select concat(table_schema,'.',table_name) from information_schema.tables
@@ -145,27 +150,11 @@ def display_table_selection():
             df = df.sort_index()
 
             option=st.selectbox('Select table name', df, key='option')
-
-            if st.session_state.option_State:
-                st.session_state.option_State=option
-
-
-
-            data1 = read_data()
+            #read_data = read_data()
 
 
 
 
 
-
-
-
-
-
-display_db_connection_menu()
-connect_db()
-display_table_selection()
-for item in st.session_state.items():
-    st.write(item)
 
 
