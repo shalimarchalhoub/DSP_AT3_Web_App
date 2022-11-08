@@ -67,8 +67,8 @@ def set_session_state(key, value):
 
     if key not in st.session_state:
         st.session_state[key]=value
-        for item in st.session_state.items():
-            return item
+    for item in st.session_state.items():
+        return item
 def set_session_states(keys, value=None):
     """
     --------------------
