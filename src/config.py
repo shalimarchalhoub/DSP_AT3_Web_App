@@ -104,7 +104,7 @@ def set_session_states(keys, value=None):
     if 'db_pass' not in st.session_state:
         st.session_state.db_pass='password'
     if 'db_status' not in st.session_state:
-        st.session_state.db_status=_connect_form_cb
+        st.session_state.db_status=connect_db()
     if 'db_infos_df' not in st.session_state:
         st.session_state.db_infos_df=dt.info()
     if 'schema_selected' not in st.session_state:
