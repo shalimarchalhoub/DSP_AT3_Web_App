@@ -113,7 +113,7 @@ def set_session_states(keys, value=None):
         st.session_state.table_selected=option.rpartition('.')[2]
     if 'data' not in st.session_state:
        st.session_state.data=read_data
-    for item in st.session_state.item():
+    for item in st.session_state.items():
         return(item)
 
 def display_session_state():
