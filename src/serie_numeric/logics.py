@@ -37,7 +37,6 @@ class NumericColumn:
         
         self.df = pd.DataFrame()
         self.serie = None
-        # not sure why PostgresConnector require both database and host 
         self.db = PostgresConnector(session_states['db_host'],
                           session_states['db_user'],
                           session_states['db_pass'],
