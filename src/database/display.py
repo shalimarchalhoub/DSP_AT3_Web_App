@@ -2,12 +2,9 @@ import streamlit as st
 import pandas as pd
 import psycopg2
 from psycopg2 import OperationalError
-from logics import PostgresConnector
-from config import set_app_config,display_session_state
-#from src.database.logics import PostgresConnector
-#from src.dataframe.display import read_data
-set_app_config()
-display_session_state()
+from src.database.logics import PostgresConnector
+from src.dataframe.display import read_data
+
 if 'CONNECTED' not in st.session_state:
     st.session_state.CONNECTED =  False
 def _connect_form_cb(connect_status):
@@ -157,9 +154,7 @@ def display_table_selection():
 
 
 
-display_db_connection_menu()
-connect_db()
-display_table_selection()
+
 
 
 
