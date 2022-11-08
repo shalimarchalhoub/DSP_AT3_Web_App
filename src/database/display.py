@@ -97,8 +97,9 @@ def connect_db():
         """
     if submit:
        connectdb=PostgresConnector('{}'.format(db_Name),'{}'.format(username),'{}'.format(password))
-       connectdb.open_connection()
+       connection=connectdb.open_connection()
        print("connection to the database is established and class instantiated")
+       return connection
 
 def display_table_selection():
     """
@@ -150,7 +151,8 @@ def display_table_selection():
             df = df.sort_index()
 
             option=st.selectbox('Select table name', df, key='option')
-            #read_data = read_data()
+            read_data = read_data()
+
 
 
 
