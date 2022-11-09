@@ -1,1 +1,4 @@
-=> to be filled by student
+streamlit==1.14.0
+pandas==1.5.1
+psycopg2==2.9.5
+from pandas.util.testing import assert_frame_equal  #This has to be imported to run the database/logics&queries unit testing
