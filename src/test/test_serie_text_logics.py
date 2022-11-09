@@ -10,7 +10,6 @@ class TestGetMissingQuery(unittest.TestCase):
         col_name = "column"
         query = ' '.join(get_missing_query(schema_name,table_name,col_name).split())
         self.assertEqual(query,' '.join("""
-        
         SELECT COUNT(test_col) 
         FROM public.test_table 
         WHERE test_col IS NULL;
@@ -23,11 +22,9 @@ class TestGetModeQuery(unittest.TestCase):
         col_name = "column"
         query = ' '.join(get_mode_query(schema_name,table_name,col_name).split())
         self.assertEqual(query, ' '.join("""
-
         SELECT MODE()
         WITHIN GROUP(ORDER BY test_col) AS mode
-        FROM public.test_table;
-        
+        FROM public.test_table; 
         """.split()))
 
 class TestGetAlphaQuery(unittest.TestCase):
@@ -37,13 +34,9 @@ class TestGetAlphaQuery(unittest.TestCase):
         col_name = "column"
         query = ' '.join(get_alpha_query(schema_name, table_name, col_name).split())
         self.assertEqual(query, ' '.join("""
-        
         SELECT COUNT(test_col) 
         FROM public.test_table
         WHERE test_col LIKE '%[a-zA-Z]%';
-        
-        
-        
         """.split()))
 
 
