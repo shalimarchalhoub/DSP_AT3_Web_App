@@ -54,7 +54,6 @@ def get_weekend_count_query(schema_name, table_name, col_name):
     """
     query = "SELECT count(*) FROM " + schema_name + "." + table_name + \
         " WHERE EXTRACT(dow FROM " + col_name + ") = 6 or EXTRACT(dow FROM " + col_name + ") = 0"
-
     return query
 
 def get_1900_count_query(schema_name, table_name, col_name):
@@ -62,7 +61,8 @@ def get_1900_count_query(schema_name, table_name, col_name):
     --------------------
     Description
     --------------------
-    => get_1900_count_query (method): Function that returns the query used for computing the number of times a datetime column has the value '1900-01-01'
+    => get_1900_count_query (method): Function that returns the query used for 
+    computing the number of times a datetime column has the value '1900-01-01'
 
     --------------------
     Parameters
@@ -82,6 +82,6 @@ def get_1900_count_query(schema_name, table_name, col_name):
     => the count of value in a datetime column which has the value equal to 01-01-1990
 
     """
-    query = "SELECT COUNT(*) FROM " + schema_name + "." + table_name + \
+    query = "SELECT COUNT(*) Jumlah FROM " + schema_name + "." + table_name + \
             " WHERE " + col_name + "= '1900-01-01'"
     return query
