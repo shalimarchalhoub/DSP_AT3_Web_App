@@ -15,23 +15,19 @@ def read_data():
     --------------------
     Parameters
     --------------------
-    => To be filled by student
-    -> name (type): description
+    => No parameters
 
     --------------------
     Pseudo-Code
     --------------------
-    => To be filled by student
-    -> pseudo-code
+    => This function reads the Postgres table and select the needed information
 
     --------------------
     Returns
     --------------------
-    => To be filled by student
-    -> (type): description
+    => This function does not return anything
 
     """
-    #=> To be filled by student
     schema_name = st.session_state['schema_selected']
     table_name = st.session_state['table_selected']
     db = st.session_state['db']
@@ -50,23 +46,18 @@ def display_overall():
     --------------------
     Parameters
     --------------------
-    => To be filled by student
-    -> name (type): description
+    => No parameters
 
     --------------------
     Pseudo-Code
     --------------------
-    => To be filled by student
-    -> pseudo-code
+    => This function is used to display the section Overall on the web app
 
     --------------------
     Returns
     --------------------
-    => To be filled by student
-    -> (type): description
-
+    => This function does not return anything
     """
-    #=> To be filled by student
     schema_name = st.session_state['schema_selected']
     table_name = st.session_state['table_selected']
     dt = st.session_state['data']
@@ -86,23 +77,19 @@ def display_dataframes():
     --------------------
     Parameters
     --------------------
-    => To be filled by student
-    -> name (type): description
+    => No parameters
 
     --------------------
     Pseudo-Code
     --------------------
-    => To be filled by student
-    -> pseudo-code
+    => This function is made to display the needed information for the Explore section on the web app
 
     --------------------
     Returns
     --------------------
-    => To be filled by student
-    -> (type): description
+    => This function does not return anything
 
     """
-    #=> To be filled by student
     st.write('Explore Dataframe')
     dt = st.session_state['data']
     mxrow = dt.n_rows
