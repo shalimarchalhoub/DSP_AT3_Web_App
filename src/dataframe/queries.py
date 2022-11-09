@@ -1,4 +1,4 @@
-\def get_numeric_tables_query(schema_name, table_name):
+def get_numeric_tables_query(schema_name, table_name):
     """
     --------------------
     Description
