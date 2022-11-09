@@ -10,20 +10,23 @@ def set_app_config():
     --------------------
     Parameters
     --------------------
-    => To be filled by student
-    -> name (type): description
+    ->page_title:It is used to setup the page title
+    ->page_icon:It is used for setting up the page icon
+    ->layout: It is used for setting up the layout
+    ->initial_sidebar_state: It is used to initialise the sidebar state
+    ->menu_items: It is used for setting up the menu items such as about,get help, etc.
+
+
 
     --------------------
     Pseudo-Code
     --------------------
-    => To be filled by student
-    -> pseudo-code
+    -> This code is used to set up the App config.
 
     --------------------
     Returns
     --------------------
-    => To be filled by student
-    -> (type): description
+    ->It returns the App conifguration
 
     """
 
@@ -49,20 +52,18 @@ def set_session_state(key, value):
      --------------------
      Parameters
      --------------------
-     => To be filled by student
-     -> name (type): description
+     ->key: Type is str, it stores the key given as one of the inputs
+     ->value:Type is str, it stores the value given as one of the inputs
 
      --------------------
      Pseudo-Code
      --------------------
-     => To be filled by student
-     -> pseudo-code
+     -This code saves a key-value pair to the streamlit session state.
 
      --------------------
      Returns
      --------------------
-     => To be filled by student
-     -> (type): description
+     ->It returns the key-value pair to the streamlit session state.
     """
 
     if key not in st.session_state:
@@ -80,18 +81,18 @@ def set_session_states(keys, value=None):
     --------------------
     Parameters
     --------------------
-    => To be filled by student
-    -> name (type): description
+    ->Keys: type is str, it takes the keys as an input
+    ->items:type is str, it stores the list of key-value pair
 
     --------------------
     Pseudo-Code
     --------------------
-    => To be filled by student
-    -> pseudo-code
+    ->This code saves a list of key-value pairs to the Streamlit
 
     --------------------
     Returns
     --------------------
+    ->return type is str, key-value pairs is returned
     """
     if 'db' not in st.session_state:
         st.session_state.db='postgres'
@@ -126,20 +127,17 @@ def display_session_state():
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        -> item: It stores the current values of streamlit session state.
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        -> This code displays the current values of streamlit session state.
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        -> Type is str, it returns the current values of the streamlit session state.
 
         """
     for item in st.session_state.items():
