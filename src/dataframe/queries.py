@@ -1,4 +1,4 @@
-def get_numeric_tables_query(schema_name, table_name):
+\def get_numeric_tables_query(schema_name, table_name):
     """
     --------------------
     Description
@@ -10,20 +10,18 @@ def get_numeric_tables_query(schema_name, table_name):
     --------------------
     Parameters
     --------------------
-    => To be filled by student
-    -> name (type): description
+    => schema_name = the name of the schema whose tables we want to extract the information from
+    => table_name = the name of the table whose columns we want to extract the information from
 
     --------------------
     Pseudo-Code
     --------------------
-    => To be filled by student
-    -> pseudo-code
+    => This function is used to get the columns of numeric type from the Postgres table
 
     --------------------
     Returns
     --------------------
-    => To be filled by student
-    -> (type): description
+    => This function returns the result of the query saved in the variable 'query' which consists of numeric columns.
     """
     query = "select col.table_schema, col.table_name, " + \
        "col.ordinal_position as col_id," + \
@@ -52,23 +50,20 @@ def get_text_tables_query(schema_name, table_name):
     --------------------
     Parameters
     --------------------
-    => To be filled by student
-    -> name (type): description
-
+    => schema_name = the name of the schema whose tables we want to extract the information from
+    => table_name = the name of the table whose columns we want to extract the information from
+    
     --------------------
     Pseudo-Code
     --------------------
-    => To be filled by student
-    -> pseudo-code
+    => This function is used to get the columns of text type from the Postgres table
 
     --------------------
     Returns
     --------------------
-    => To be filled by student
-    -> (type): description
+    => This function returns the result of the query saved in the variable 'query' which consists of text or char columns.
 
     """
-    #=> To be filled by student
     query = "select col.table_schema, col.table_name,  "+ \
        "col.ordinal_position as column_id, "+ \
        "col.column_name, col.data_type, "+ \
@@ -95,23 +90,20 @@ def get_date_tables_query(schema_name, table_name):
     --------------------
     Parameters
     --------------------
-    => To be filled by student
-    -> name (type): description
+    => schema_name = the name of the schema whose tables we want to extract the information from
+    => table_name = the name of the table whose columns we want to extract the information from
 
     --------------------
     Pseudo-Code
     --------------------
-    => To be filled by student
-    -> pseudo-code
-
+    => This function is used to get the columns of date type from the Postgres table
+    
     --------------------
     Returns
     --------------------
-    => To be filled by student
-    -> (type): description
+    => This function returns the result of the query saved in the variable 'query' which consists of date columns.
 
     """
-    #=> To be filled by student
     query = "select col.table_schema, col.table_name, " + \
        "col.ordinal_position as column_id, " + \
        "col.column_name, col.data_type, " + \
