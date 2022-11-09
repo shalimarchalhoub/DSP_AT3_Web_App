@@ -311,7 +311,8 @@ class TextColumn:
                  alphabet.append(i)
         total= pd.Series(alphabet)
     
-        return sum(total.str.islower().fillna(False))
+        if total.empty: return 0
+        else: return sum(total.str.islower().fillna(False))
 
     def set_uppercase(self):
         """
@@ -348,8 +349,8 @@ class TextColumn:
                 if i.isalpha() == True:
                  alphabet.append(i)
         total= pd.Series(alphabet)
-    
-        return sum(total.str.isupper().fillna(False))
+        if total.empty: return 0
+        else: return sum(total.str.isupper().fillna(False))
 
     
     def set_alphabet(self):
