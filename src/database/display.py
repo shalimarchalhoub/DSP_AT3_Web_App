@@ -5,10 +5,7 @@ from psycopg2 import OperationalError
 from src.database.logics import PostgresConnector
 from src.dataframe.display import read_data
 
-if 'CONNECTED' not in st.session_state:
-    st.session_state.CONNECTED =  False
-def _connect_form_cb(connect_status):
-    st.session_state.CONNECTED = connect_status
+
 
 
 def display_db_connection_menu():
@@ -40,6 +37,11 @@ def display_db_connection_menu():
      the user can pull or push data/request to the Postgres databse.
      ----
     """
+    if 'CONNECTED' not in st.session_state:
+        st.session_state.CONNECTED = False
+
+    def _connect_form_cb(connect_status):
+        st.session_state.CONNECTED = connect_status
 
     with     st.form(key="my_form"):
              global username
@@ -152,7 +154,6 @@ def display_table_selection():
 
             option=st.selectbox('Select table name', df, key='option')
             read_data = read_data()
-
 
 
 
