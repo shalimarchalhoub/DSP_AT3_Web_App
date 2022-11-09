@@ -28,7 +28,6 @@ class Dataset:
     -> date_cols (list): List of columns of datetime type (optional)
     """
     def __init__(self, schema_name=None, table_name=None, db=None, df=None):
-        #=> To be filled by student
         self.schema_name = schema_name
         self.table_name = table_name
         self.db = db
@@ -46,38 +45,34 @@ class Dataset:
         --------------------
         Description
         --------------------
-        -> set_data (method): Class method that computes 
+        => set_data (method): Class method that computes 
         all requested information from self.df 
         to be displayed in the Overall section of Streamlit app 
 
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        => No parameters
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        => A function that computes the requested information from self.df as long as the df is not empty.
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        => Does not return anything, only computing and retaining the requested information
 
         """
-        # => To be filled by student
-        #if self.is_df_none() == False:
-        self.set_dimensions()
-        self.set_duplicates()
-        self.set_missing()
-        self.set_numeric_columns()
-        self.set_date_columns()
-        self.set_text_columns()
-        
+        if self.is_df_none() == False:
+            self.set_dimensions()
+            self.set_duplicates()
+            self.set_missing()
+            self.set_numeric_columns()
+            self.set_date_columns()
+            self.set_text_columns()
+            
     def is_df_none(self):
         """
         --------------------
@@ -88,23 +83,20 @@ class Dataset:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
-
+        => No parameters
+        
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        => The function checks whether the dataframe is empty or not, and returns True if empty and False if not empty.
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        => True: if df is empty
+        => False: if df is not empty
 
         """
-        #=> To be filled by student
         return self.df.empty 
 
     def set_dimensions(self):
@@ -117,23 +109,19 @@ class Dataset:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        => No parameters
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
-
+        => The function calculates the numeber of rows and columns in df and retains the information and store them to self.n_rows and self.n_cols while not returning anything
+        
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        => This function only computes and stores information, does not return anything
 
         """
-        #=> To be filled by student
         self.n_rows = self.df.shape[0]
         self.n_cols = self.df.shape[1]
 
@@ -149,23 +137,19 @@ class Dataset:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        => No parameters
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        => This function calculates the total number of dataframe duplicates but does not return anything, as it will only calculate the needed information and store in self.n_duplicates
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        => This function does not return anything
 
         """
-        #=> To be filled by student
         self.n_duplicates = self.df.duplicated().sum()
 
     def set_missing(self):
@@ -178,23 +162,19 @@ class Dataset:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        => No parameters
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        => This function calculates the total sum of missing values in self.df and store the result in self.n_missing, but the function does not return anything
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        => This function does not return anything, only computes and stores the result in self.n_missing
 
         """
-        #=> To be filled by student
         self.n_missing = self.df.isnull().sum().sum()
 
     def set_numeric_columns(self):
@@ -211,23 +191,19 @@ class Dataset:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        => No parameters
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
-
+        => This function gets the numeric columns from postgres table using the get_numeric_tables_query() function and store them in self.num_cols
+        
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        => This function does not return anything
 
         """
-        #=> To be filled by student
         query = get_numeric_tables_query(self.schema_name, self.table_name)
         numdf = self.db.run_query(query)
         self.num_cols = numdf["column_name"].values.tolist()
@@ -246,23 +222,19 @@ class Dataset:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        => No parameters
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        => This function gets the numeric columns from postgres table using the get_text_tables_query() function and store them in self.text_cols
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        => This function does not return anything
 
         """
-        #=> To be filled by student
         query = get_text_tables_query(self.schema_name, self.table_name)
         textdf = self.db.run_query(query)
         self.text_cols = textdf["column_name"].values.tolist()
@@ -278,29 +250,21 @@ class Dataset:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        => No parameters
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
-
+        => This function gets the numeric columns from postgres table using the get_date_tables_query() function and store them in self.date_cols
+        
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        => This function does not return anything
 
         """
-        #=> To be filled by student
         query = get_date_tables_query(self.schema_name, self.table_name)
-        #st.write(query)
-        #st.write(self.schema_name)
-        #st.write(self.table_name)
         datedf = self.db.run_query(query)
-        #st.write(datedf)
         self.date_cols  = datedf["column_name"].values.tolist()
 
     def get_head(self, n=5):
@@ -313,23 +277,19 @@ class Dataset:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
-
+        => n (int) = the number of rows
+        
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        => This function displays and returns the top n rows of the df with default of 5.
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        => dataframe with n rows starting from the top
 
         """
-        #=> To be filled by student
         return self.df.head(n)
 
     def get_tail(self, n=5):
@@ -342,23 +302,19 @@ class Dataset:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        => n (int) = the number of rows
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        => This function displays and returns the bottom n rows of the df with default of 5.
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
-
+        => dataframe with n rows starting from the bottom
+        
         """
-        #=> To be filled by student
         return self.df.tail(n)
 
     def get_sample(self, n=5):
@@ -371,21 +327,18 @@ class Dataset:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
+        => n (int) = the number of rows
 
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        => This function displays and returns random n rows of the df with random orders with default of 5.
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
-
+        => dataframe with n rows at random orders
+        
         """
         return self.df.sample(n)
 
@@ -402,23 +355,19 @@ class Dataset:
         --------------------
         Parameters
         --------------------
-        => To be filled by student
-        -> name (type): description
-
+        => No parameters
+        
         --------------------
         Pseudo-Code
         --------------------
-        => To be filled by student
-        -> pseudo-code
+        => This function makes a dataframe containing 2 columns, 'Description' and its 'Value', whose information has been calculated from set_data().
 
         --------------------
         Returns
         --------------------
-        => To be filled by student
-        -> (type): description
+        => The dataframe of the desired information in the Overall section of the app
 
         """
-        #=> To be filled by student
         infodf = pd.DataFrame({'Description':['Table Name',
                                         'Number of Rowss',
                                         'Number of Columns',
